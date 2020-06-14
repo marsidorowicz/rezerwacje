@@ -34,6 +34,9 @@ class OpenToplevelWindow(Toplevel):
         Toplevel.__init__(self, *args, **kwargs)
         self.grab_set()
         self.geometry("1000x1000")
+        self.title("Dodaj rezerwację")
+        self.takefocus = True
+        self.focus_set()
 
         def replace_text():
             app.text.delete(1.0, END)
