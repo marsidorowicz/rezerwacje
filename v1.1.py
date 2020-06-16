@@ -465,13 +465,9 @@ class Authentication:
     user = 'admin'
     passw = 'admin'
 
-    def login_user(self, one):
+    def login_user(self, one=None):
 
-        def pass1():
-            print(one)
-            pass
-
-        '''Check username and password entered are correct'''
+        """Check username and password entered are correct"""
         try:
             if self.username.get() == self.user and self.password.get() == self.passw:
                 self.authenticated = True
@@ -482,9 +478,10 @@ class Authentication:
                 self.message['text'] = 'Hasło niepoprawne! Pozostało {} {}'.format(self.count_login, "prób")
                 if self.count_login == 0:
                     self.root1.destroy()
-                    quit()
-        except TclError as tcl:
-            print(tcl)
+                    sys.exit(1)
+        except Exception as e:
+            print(e)
+            sys.exit(101)
 
     def __init__(self, root):
 
@@ -502,8 +499,6 @@ class Authentication:
             rows += 1
 
         '''Username and Password'''
-
-
 
         frame = LabelFrame(self.root1, text='Login')
         frame.grid(row=1, column=1, columnspan=10, rowspan=10)
