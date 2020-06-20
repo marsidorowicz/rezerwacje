@@ -102,7 +102,7 @@ class OpenToplevelWindow(Toplevel):
 
 class ReservationWindow(Toplevel):
 
-    def test(self):
+    def save(self):
         self.name = self.TEntry1.get()
         self.surname = self.TEntry1_3.get()
         self.month = self.TEntry1_4.get()
@@ -110,6 +110,14 @@ class ReservationWindow(Toplevel):
         print("Nazwisko: {}".format(self.surname))
         print("Miesiąc: {}".format(self.month))
         print(self.TEntry1_5.get())
+
+    def test(self):
+        self.TEntry1.delete(0, END)
+        self.TEntry1_3.delete(0, END)
+        self.TEntry1_4.delete(0, END)
+        print("Imię: {}".format(self.name))
+        print("Nazwisko: {}".format(self.surname))
+        print("Miesiąc: {}".format(self.month))
 
     def __init__(self, *args, **kwargs):
         Toplevel.__init__(self, *args, **kwargs)
@@ -454,10 +462,12 @@ class ReservationWindow(Toplevel):
 
         self.Home = ttk.Button(self, text='''Wczytaj''')
         self.Home.place(relx=0.01, rely=0.015, height=34, width=137)
-        self.Reservation = ttk.Button(self, text='''Zapisz''', command=self.test)
+        self.Reservation = ttk.Button(self, text='''Zapisz''', command=self.save)
         self.Reservation.place(relx=0.01, rely=0.088, height=34, width=137)
         self.Button1_2 = ttk.Button(self, text='''Anuluj''', command=self.destroy)
         self.Button1_2.place(relx=0.01, rely=0.161, height=34, width=137)
+        self.Reservation = ttk.Button(self, text='''Test''', command=self.test)
+        self.Reservation.place(relx=0.01, rely=0.234, height=34, width=137)
 
 
 class Authentication:
@@ -522,14 +532,14 @@ class Authentication:
 
 if __name__ == "__main__":
 
-    root1 = Tk()
-    root1.geometry('425x185+700+300')
-    application = Authentication(root1)
-    root1.mainloop()
+    # root1 = Tk()
+    # root1.geometry('425x185+700+300')  # uncomment to get AUTHENTICATION
+    # application = Authentication(root1)
+    # root1.mainloop()
 
     root = Tk()
     app = GUI(root)
-    if not application.authenticated:
-        sys.exit()
+    # if not application.authenticated:
+    #     sys.exit()
 
     root.mainloop()
