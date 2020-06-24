@@ -31,21 +31,7 @@ class GUI(Frame):
         if msg == 'yes':
             exit()
 
-    def showallrecords(self):
-        data = self.readfromdatabase()
-        for index, dat in enumerate(data):
-            pass
-            # Label(self.master, text=dat[0]).grid(row=index + 1, column=0)
-            # Label(self.master, text=dat[1]).grid(row=index + 1, column=1)
-            # Label(self.master, text=dat[2]).grid(row=index + 1, column=2)
-            # Label(self.frame, text=dat[0], bg="black", fg="white").place(x=1, y=(1+(index*100)), height=34,
-            #                                                              width=100)
-            # Label(self.frame, text=dat[1], bg="green", fg="white").place(x=150, y=(1+(index*100)), height=34,
-            #                                                              width=100)
-            # Label(self.frame, text=dat[2], bg="yellow", fg="white").place(x=300, y=(1+(index*100)), height=34,
-            #                                                              width=100)
-
-    def readfromdatabase(self):
+    def read_from_database(self):
         self.cur.execute("SELECT * FROM reservations")
         return self.cur.fetchall()
 
@@ -63,116 +49,41 @@ class GUI(Frame):
         for i in range(20):
             self.lb[i].yview(*args)
 
+    def on_hsb(self, *args):
+
+        # # automate Listbox yview method creation
+        for i in range(20):
+            self.lb[i].yview(*args)
+
     def on_mouse_wheel(self, event):
 
         # automate Listbox creation
         for i in range(self.x):
             self.lb[i].yview("scroll", event.delta // 50, "units")
-
-        # self.lb[0].yview("scroll", event.delta // 80, "units")
-        # self.lb[1].yview("scroll", event.delta // 80, "units")
-        # self.lb[2].yview("scroll", event.delta // 80, "units")
-        # self.lb[3].yview("scroll", event.delta // 80, "units")
-        # self.lb[4].yview("scroll", event.delta // 80, "units")
-        # self.lb[5].yview("scroll", event.delta // 80, "units")
-        # self.lb[6].yview("scroll", event.delta // 80, "units")
-        # self.lb[7].yview("scroll", event.delta // 80, "units")
-        # self.lb[8].yview("scroll", event.delta // 80, "units")
-        # self.lb[9].yview("scroll", event.delta // 80, "units")
-        # self.lb[10].yview("scroll", event.delta // 80, "units")
-
-        # self.lb1.yview("scroll", event.delta // 80, "units")
-        # self.lb2.yview("scroll", event.delta // 80, "units")
-        # self.lb3.yview("scroll", event.delta // 80, "units")
-        # self.lb4.yview("scroll", event.delta // 80, "units")
-        # self.lb5.yview("scroll", event.delta // 80, "units")
-        # self.lb6.yview("scroll", event.delta // 80, "units")
-        # self.lb7.yview("scroll", event.delta // 80, "units")
-        # self.lb8.yview("scroll", event.delta // 80, "units")
-        # self.lb9.yview("scroll", event.delta // 80, "units")
-        # self.lb10.yview("scroll", event.delta // 80, "units")
-        # this prevents default bindings from firing, which
-        # would end up scrolling the widget twice
         return "break"
 
-    def display_database(self):
+    def refresh_main(self):
 
-        # reset Frame1
+        self.automated_listbox_creation()
+
+    def automated_listbox_creation(self):
         self.Frame1.destroy()
         if self.vsb:
             self.vsb.destroy()
+        if self.hsb:
+            self.hsb.destroy()
         self.Frame1 = tk.Frame(root, background="black")
         self.Frame1.place(x=200, y=30, relheight=0.930, relwidth=0.900)
-
-
-
-        self.label1 = tk.Label(root, text="Imię")
-        self.label1.place(x=200, y=1, height=30, width=100)
-        self.label2 = tk.Label(root, text="Nazwisko")
-        self.label2.place(x=290, y=1, height=30, width=100)
-        self.label3 = tk.Label(root, text="Miesiąc")
-        self.label3.place(x=385, y=1, height=30, width=100)
-        self.label4 = tk.Label(root, text="Przyjazd")
-        self.label4.place(x=480, y=1, height=30, width=100)
-        self.label5 = tk.Label(root, text="Wyjazd")
-        self.label5.place(x=575, y=1, height=30, width=100)
-        self.label6 = tk.Label(root, text="Kwota całk")
-        self.label6.place(x=670, y=1, height=30, width=100)
-        self.label6 = tk.Label(root, text="Kwota ra")
-        self.label6.place(x=760, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Booking")
-        self.label7.place(x=855, y=1, height=30, width=100)
-
-
-
-
-
-
-
-
-        # self.cur.close()
-        # self.connection.close()
-
-    def __init__(self, master, *args, **kwargs):
-        Frame.__init__(self, master, *args, **kwargs)
-
-        self.master = master
-        self.master.geometry("1500x600+50+50")
-        self.master.title("System obsługi apartamentów")
-        self.master.minsize(1500, 600)
-        self.master.maxsize(1924, 1061)
-        self.master.resizable(1, 1)
-        self.authenticated = False
-        self.connection = sqlite3.connect('r.sqlite')
-        self.cur = self.connection.cursor()
-        self.frame = None
-        self.vsb = None
-        self.lb = {}
-        self.data = self.readfromdatabase()
-        for index, dat in enumerate(self.data):
-            self.x = len(dat)
-
-        self.Frame1 = tk.Frame(root, background="black")
-        self.Frame1.place(relx=0.159, rely=0.015, relheight=0.974, relwidth=0.833)
-        self.display_database()
-
-        # dodane z rezerwacji
-        self.Home = ttk.Button(root, text='''Strona główna''', command=self.display_database)
-        self.Home.place(relx=0.01, rely=0.015, height=34, width=137)
-        self.Reservation_button = ttk.Button(root, text='''Dodaj rezerwację''', command=lambda: ReservationWindow())
-        self.Reservation_button.place(relx=0.01, rely=0.088, height=34, width=137)
-        self.Button1_2 = ttk.Button(root, text='''Test''', command=self.test1)
-        self.Button1_2.place(relx=0.01, rely=0.161, height=34, width=137)
-        self.Quit = ttk.Button(root, text='''Zamknij''', command=self.quit1)
-        self.Quit.place(relx=0.01, rely=0.234, height=34, width=137)
-
         # automate Listbox creation
-        # Scrillbar config
+        # Scrollbar config
         self.vsb = tk.Scrollbar(orient="vertical", command=self.on_vsb)
+        self.hsb = tk.Scrollbar(orient="horizontal", command=self.on_hsb)
         self.vsb.pack(side="right", fill="y")
+        self.hsb.pack(side="bottom", fill="x")
         self.lb = {}
         for i in range(self.x):
-            self.listbox = tk.Listbox(self.Frame1, yscrollcommand=self.vsb.set, width=14, relief="sunken")
+            self.listbox = tk.Listbox(self.Frame1, yscrollcommand=self.vsb.set, xscrollcommand=self.hsb.set,
+                                      width=14, relief="sunken")
             self.listbox.pack(side="left", fill="y", expand=False)
             self.lb[i] = self.listbox
             for index, dat in enumerate(self.data):
@@ -193,6 +104,86 @@ class GUI(Frame):
                     self.lb[i].itemconfig(index, {'foreground': 'wheat'})
         except Exception as e:
             pass
+
+    def __init__(self, master, *args, **kwargs):
+        Frame.__init__(self, master, *args, **kwargs)
+
+        self.master = master
+        self.master.geometry("1500x600+50+50")
+        self.master.title("System obsługi apartamentów")
+        self.master.minsize(1500, 600)
+        self.master.maxsize(1924, 1061)
+        self.master.resizable(1, 1)
+        self.authenticated = False
+        self.connection = sqlite3.connect('r.sqlite')
+        self.cur = self.connection.cursor()
+        self.frame = None
+        self.vsb = None
+        self.hsb = None
+        self.listbox = None
+
+        # labels:
+        self.label1 = tk.Label(root, text="Imię")
+        self.label1.place(x=200, y=1, height=30, width=100)
+        self.label2 = tk.Label(root, text="Nazwisko")
+        self.label2.place(x=285, y=1, height=30, width=100)
+        self.label3 = tk.Label(root, text="Miesiąc")
+        self.label3.place(x=375, y=1, height=30, width=100)
+        self.label4 = tk.Label(root, text="Przyjazd")
+        self.label4.place(x=460, y=1, height=30, width=100)
+        self.label5 = tk.Label(root, text="Wyjazd")
+        self.label5.place(x=550, y=1, height=30, width=100)
+        self.label6 = tk.Label(root, text="Kwota całk")
+        self.label6.place(x=640, y=1, height=30, width=100)
+        self.label6 = tk.Label(root, text="Kwota ra")
+        self.label6.place(x=725, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Booking")
+        self.label7.place(x=810, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="VAT")
+        self.label7.place(x=900, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Pod. miej.")
+        self.label7.place(x=985, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Koszty")
+        self.label7.place(x=1075, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Prezent")
+        self.label7.place(x=1160, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Sprzątanie")
+        self.label7.place(x=1250, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="APARTAMENT")
+        self.label7.place(x=1340, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Depozyt")
+        self.label7.place(x=1425, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Dokument")
+        self.label7.place(x=1515, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Opłacone")
+        self.label7.place(x=1600, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Dopłata")
+        self.label7.place(x=1690, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Prowizja")
+        self.label7.place(x=1780, y=1, height=30, width=100)
+        self.label7 = tk.Label(root, text="Czas rez.")
+        self.label7.place(x=1870, y=1, height=30, width=100)
+
+        self.lb = {}
+        self.data = self.read_from_database()
+        for index, dat in enumerate(self.data):
+            self.x = len(dat)
+
+        self.Frame1 = tk.Frame(root, background="black")
+        self.Frame1.place(relx=0.159, rely=0.015, relheight=0.974, relwidth=0.833)
+
+        # menu
+        self.Home = ttk.Button(root, text='''Strona główna''', command=self.refresh_main)
+        self.Home.place(relx=0.01, rely=0.015, height=34, width=137)
+        self.Reservation_button = ttk.Button(root, text='''Dodaj rezerwację''', command=lambda: ReservationWindow())
+        self.Reservation_button.place(relx=0.01, rely=0.088, height=34, width=137)
+        self.Button1_2 = ttk.Button(root, text='''Test''', command=self.test1)
+        self.Button1_2.place(relx=0.01, rely=0.161, height=34, width=137)
+        self.Quit = ttk.Button(root, text='''Zamknij''', command=self.quit1)
+        self.Quit.place(relx=0.01, rely=0.234, height=34, width=137)
+
+        self.automated_listbox_creation()
+
         self.cur.close()
         self.connection.close()
 
@@ -322,12 +313,6 @@ class ReservationWindow(Toplevel):
                 print(row)
 
         c.close()
-        # conn = sqlite3.connect("r.db")
-        # c = conn.cursor()
-        # c.execute("SELECT * FROM reservations")
-        # rows = c.fetchall()
-        # for row in rows:
-        #     print(row)
 
     @staticmethod
     def callback(p):
