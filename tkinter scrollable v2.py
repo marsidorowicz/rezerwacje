@@ -56,7 +56,7 @@ class Mousewheel_Support(object):
 
     def _on_mousewheel(self, event):
         if self._active_area:
-            self._active_area.onMouseWheel(event)
+            self._active_area.on_mouse_wheel(event)
 
     def _mousewheel_bind(self, widget):
         self._active_area = widget
@@ -72,14 +72,14 @@ class Mousewheel_Support(object):
         if xscrollbar is not None:
             horizontal_factor = horizontal_factor or self.horizontal_factor
 
-            xscrollbar.onMouseWheel = self._make_mouse_wheel_handler(widget, 'x', self.horizontal_factor, what)
+            xscrollbar.on_mouse_wheel = self._make_mouse_wheel_handler(widget, 'x', self.horizontal_factor, what)
             xscrollbar.bind('<Enter>', lambda event, scrollbar=xscrollbar: self._mousewheel_bind(scrollbar))
             xscrollbar.bind('<Leave>', lambda event: self._mousewheel_unbind())
 
         if yscrollbar is not None:
             vertical_factor = vertical_factor or self.vertical_factor
 
-            yscrollbar.onMouseWheel = self._make_mouse_wheel_handler(widget, 'y', self.vertical_factor, what)
+            yscrollbar.on_mouse_wheel = self._make_mouse_wheel_handler(widget, 'y', self.vertical_factor, what)
             yscrollbar.bind('<Enter>', lambda event, scrollbar=yscrollbar: self._mousewheel_bind(scrollbar))
             yscrollbar.bind('<Leave>', lambda event: self._mousewheel_unbind())
 
@@ -92,12 +92,12 @@ class Mousewheel_Support(object):
                     widget.bind('<Enter>', lambda event: self._mousewheel_bind(widget))
                     widget.bind('<Leave>', lambda event: self._mousewheel_unbind())
 
-                    widget.onMouseWheel = main_scrollbar.onMouseWheel
+                    widget.on_mouse_wheel = main_scrollbar.onMouseWheel
             else:
                 widget.bind('<Enter>', lambda event: self._mousewheel_bind(widget))
                 widget.bind('<Leave>', lambda event: self._mousewheel_unbind())
 
-                widget.onMouseWheel = main_scrollbar.onMouseWheel
+                widget.on_mouse_wheel = main_scrollbar.onMouseWheel
 
     @staticmethod
     def _make_mouse_wheel_handler(widget, orient, factor=1, what="units"):
