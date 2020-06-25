@@ -74,11 +74,13 @@ class GUI(Frame):
             self.hsb.destroy()
         self.Frame1 = tk.Frame(root, background="black")
         self.Frame1.place(x=200, y=30, relheight=0.930, relwidth=0.900)
+        self.canvas = Canvas()
         # automate Listbox creation
         # Scrollbar config
-        self.vsb = tk.Scrollbar(orient="vertical", command=self.on_vsb)
-        self.hsb = tk.Scrollbar(orient="horizontal", command=self.on_hsb)
+        self.vsb = tk.Scrollbar(root, orient="vertical", command=self.on_vsb)
+        self.hsb = tk.Scrollbar(root, orient="horizontal", command=self.on_hsb)
         self.vsb.pack(side="right", fill="y")
+        self.vsb.config()   # TODO
         self.hsb.pack(side="bottom", fill="x")
         self.lb = {}
         for i in range(self.x):
