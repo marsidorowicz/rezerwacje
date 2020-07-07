@@ -5,9 +5,10 @@ from datetime import *
 from tkinter import *
 import platform
 import datetime
-
-# conn = sqlite3.connect("r.db")
-# c = conn.cursor()
+import sched
+import time
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 Font = ("Verdana", 12)
 
@@ -19,14 +20,6 @@ except ImportError:
     from tkinter import Frame, Label, Message, StringVar, Canvas
     from tkinter.ttk import Scrollbar
     from tkinter.constants import *
-
-
-
-
-
-
-
-
 
 OS = platform.system()
 
@@ -138,9 +131,6 @@ class Scrolling_Area(Frame, object):
                  scroll_vertically=True, yscrollbar=None, outer_background=None, inner_frame=Frame, **kw):
         super(Scrolling_Area, self).__init__(master, **kw)
 
-        import gspread
-        from oauth2client.service_account import ServiceAccountCredentials
-
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
@@ -155,22 +145,17 @@ class Scrolling_Area(Frame, object):
 
 
         #  add connection to google sheet
-        scope = ['https://spreadsheets.google.com/feeds', 'https://googleapis.com/auth/drive']
-        print("Connecting to google sheet apartamentymsc@gmail.com")
         cred = ServiceAccountCredentials.from_json_keyfile_name(
             'E:\\Programowanie\plucky-avatar-282313-93e0d7031067.json')
 
         gs = gspread.authorize(cred)
-        print("Authentication successful, downloading content from sheet1")
         kontr = gs.open('Kontrahenci2020').sheet1
 
         rows = kontr.get()
-        print("Connecting to google sheet zapas")
         cred1 = ServiceAccountCredentials.from_json_keyfile_name(
             'E:\\Programowanie\\wayscript\\send-emails-282415-a9f0e1e1227d.json')
 
         gs1 = gspread.authorize(cred1)
-        print("Authentication successful, downloading content from sheet2")
         zapas = gs1.open('Zapas').sheet1
         self.rows_zapas = []
         today = datetime.datetime.today()
@@ -233,36 +218,6 @@ class Scrolling_Area(Frame, object):
                     self.lb[i].configure(justify=CENTER)
                 except Exception as e:
                     pass
-
-        # for i, dat in enumerate(rows[0]):
-        #
-        #     try:
-        #         self.lb[i].insert(0, dat)
-        #         self.lb[i].itemconfig(0, {'bg': 'black'})
-        #         self.lb[i].itemconfig(0, {'foreground': 'wheat'})
-        #         self.lb[i].configure(justify=CENTER)
-        #     except Exception as e:
-        #         pass
-
-
-
-
-            # for index, dat in enumerate(rows):
-            #     print(index)
-            #     print(dat)
-            #     self.lb[index].insert(index, dat[i])
-            #     # lb[i].bind("<MouseWheel>", on_mouse_wheel)
-            #     index += 1
-
-        # try:
-        #     for i in range(self.x):
-        #         for index, data in enumerate(self.data):
-        #             # this changes the background colour of all items
-        #             self.lb[i].itemconfig(index, {'bg': 'black'})
-        #             # this changes the font color of all items
-        #             self.lb[i].itemconfig(index, {'foreground': 'wheat'})
-        # except Exception as e:
-        #     pass
 
         if scroll_vertically:
             if yscrollbar is not None:
@@ -473,6 +428,48 @@ class GUI(Frame):
 
         self.automated_listbox_creation()
 
+    def clock1(self, text=None):
+
+        print("Connecting to google sheet apartamentymsc@gmail.com")
+        cred = ServiceAccountCredentials.from_json_keyfile_name(
+            'E:\\Programowanie\plucky-avatar-282313-93e0d7031067.json')
+
+        gs = gspread.authorize(cred)
+        print("Authentication successful, downloading content from sheet1")
+        kontr = gs.open('Kontrahenci2020').sheet1
+
+        rows = kontr.get()
+        print("Connecting to google sheet zapas")
+        cred1 = ServiceAccountCredentials.from_json_keyfile_name(
+            'E:\\Programowanie\\wayscript\\send-emails-282415-a9f0e1e1227d.json')
+
+        gs1 = gspread.authorize(cred1)
+        print("Authentication successful, downloading content from sheet2")
+        zapas = gs1.open('Zapas').sheet1
+        self.rows_zapas = []
+        today = datetime.datetime.today()
+        months = ['STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC', 'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ',
+                  'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ']
+        print(months[today.month-1])
+        print(datetime.datetime.now())
+        try:
+            self.rows_zapas = zapas.get()
+        except Exception as e:
+            pass
+        for row in rows:
+            if months[today.month-1] in row:
+                try:
+                    row_reduced = [row[10], row[13], row[14], row[19], row[20]]
+                    if row_reduced not in self.rows_zapas:
+                        zapas.insert_row(row_reduced)
+                        print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
+                        print(row)
+                    else:
+                        print("Content up to date...")
+                except Exception as e:
+                    print("There was problem with new content data, some data required is missing...")
+        root.after(100000, self.clock1)  # run itself again after 1000 ms
+
     def clock(self, text=None):
         self.time = datetime.datetime.now().strftime("Czas: %H:%M:%S")
         self.lab.config(text=self.time)
@@ -496,6 +493,7 @@ class GUI(Frame):
 
         # run first time
         self.clock()
+        self.clock1()
 
     def refresh_automatically(self):
         import sched
@@ -588,7 +586,15 @@ class GUI(Frame):
         self.Quit = ttk.Button(root, text='''Zamknij''', command=self.quit1)
         self.Quit.place(relx=0.01, rely=0.234, height=34, width=137)
 
+        s = sched.scheduler(time.time, time.sleep)
         self.automated_listbox_creation()
+        # def do_something(sc):
+        #     print("Doing stuff...")
+        #     self.refresh_main()
+        #     s.enter(10, 1, do_something, (sc,))
+        #
+        # s.enter(1, 1, do_something, (s,))
+        # s.run()
 
 
 class OpenToplevelWindow(Toplevel):
