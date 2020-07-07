@@ -21,7 +21,7 @@ except ImportError:
 
 
 import platform
-
+import datetime
 
 
 
@@ -172,12 +172,17 @@ class Scrolling_Area(Frame, object):
         gs1 = gspread.authorize(cred1)
         zapas = gs1.open('Zapas').sheet1
         self.rows_zapas = []
+        today = datetime.datetime.today()
+        months = ['STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC', 'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ',
+                  'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ']
+        print(months[today.month-1])
+        print(datetime.datetime.now())
         try:
             self.rows_zapas = zapas.get()
         except Exception as e:
             pass
         for row in rows:
-            if 'LIPIEC' in row:
+            if months[today.month-1] in row:
                 row_reduced = [row[10], row[13], row[14], row[19], row[20]]
                 if row_reduced not in self.rows_zapas:
                     zapas.insert_row(row_reduced)
