@@ -22,6 +22,12 @@ except ImportError:
 
 import platform
 
+
+
+
+
+
+
 OS = platform.system()
 
 
@@ -37,6 +43,9 @@ class Mousewheel_Support(object):
     def __init__(self, root, horizontal_factor=2, vertical_factor=2):
 
         self._active_area = None
+
+
+
 
         if isinstance(horizontal_factor, int):
             self.horizontal_factor = horizontal_factor
@@ -124,9 +133,13 @@ class Mousewheel_Support(object):
 
 class Scrolling_Area(Frame, object):
 
+
     def __init__(self, master, width=None, height=None, mousewheel_speed=2, scroll_horizontally=True, xscrollbar=None,
                  scroll_vertically=True, yscrollbar=None, outer_background=None, inner_frame=Frame, **kw):
         super(Scrolling_Area, self).__init__(master, **kw)
+
+        import gspread
+        from oauth2client.service_account import ServiceAccountCredentials
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -139,6 +152,105 @@ class Scrolling_Area(Frame, object):
 
         self.innerframe = inner_frame(self._clipper, padx=0, pady=0, highlightthickness=0)
         self.innerframe.place(in_=self._clipper, x=0, y=0)
+
+
+        #  add connection to google sheet
+        scope = ['https://spreadsheets.google.com/feeds', 'https://googleapis.com/auth/drive']
+
+        cred = ServiceAccountCredentials.from_json_keyfile_name(
+            'E:\\Programowanie\plucky-avatar-282313-93e0d7031067.json')
+
+        gs = gspread.authorize(cred)
+
+        kontr = gs.open('Kontrahenci2020').sheet1
+
+        rows = kontr.get()
+
+        cred1 = ServiceAccountCredentials.from_json_keyfile_name(
+            'E:\\Programowanie\\wayscript\\send-emails-282415-a9f0e1e1227d.json')
+
+        gs1 = gspread.authorize(cred1)
+        zapas = gs1.open('Zapas').sheet1
+        self.rows_zapas = []
+        try:
+            self.rows_zapas = zapas.get()
+        except Exception as e:
+            pass
+        for row in rows:
+            if 'LIPIEC' in row:
+                row_reduced = [row[10], row[13], row[14], row[19], row[20]]
+                if row_reduced not in self.rows_zapas:
+                    zapas.insert_row(row_reduced)
+                    print(row)
+
+        self.lenrows = len(rows)
+
+        self.lb = {}
+        for i in range(len(rows[0])):
+            listbox = Listbox(self.innerframe, width=25, relief="sunken", height=self.lenrows)
+            listbox.pack(side="left", fill="y", expand=True)
+            self.lb[i] = listbox
+
+        # set width for specific listbox
+        for row in rows:
+            for i in range(len(rows[0])):
+                try:
+                    self.lb[i].insert(END, row[i])
+                    if i < 10:
+                        self.lb[i].configure(width=12)
+                    if i == 12:
+                        self.lb[i].configure(width=12)
+                    if i == 14:
+                        self.lb[i].configure(width=15)
+                    if i == 15:
+                        self.lb[i].configure(width=18)
+                    if i == 16:
+                        self.lb[i].configure(width=13)
+                    if i > 17:
+                        self.lb[i].configure(width=12)
+                except Exception as e:
+                    pass
+        # set color and bg for specific listbox
+        for i in range(len(rows[0])):
+            for b in range(1, len(rows)):
+                try:
+                    self.lb[i].itemconfig(b, {'bg': 'black'})
+                    self.lb[i].itemconfig(b, {'foreground': 'white'})
+                    self.lb[i].itemconfig(0, {'bg': 'black'})
+                    self.lb[i].itemconfig(0, {'foreground': 'wheat'})
+                    self.lb[i].configure(justify=CENTER)
+                except Exception as e:
+                    pass
+
+        # for i, dat in enumerate(rows[0]):
+        #
+        #     try:
+        #         self.lb[i].insert(0, dat)
+        #         self.lb[i].itemconfig(0, {'bg': 'black'})
+        #         self.lb[i].itemconfig(0, {'foreground': 'wheat'})
+        #         self.lb[i].configure(justify=CENTER)
+        #     except Exception as e:
+        #         pass
+
+
+
+
+            # for index, dat in enumerate(rows):
+            #     print(index)
+            #     print(dat)
+            #     self.lb[index].insert(index, dat[i])
+            #     # lb[i].bind("<MouseWheel>", on_mouse_wheel)
+            #     index += 1
+
+        # try:
+        #     for i in range(self.x):
+        #         for index, data in enumerate(self.data):
+        #             # this changes the background colour of all items
+        #             self.lb[i].itemconfig(index, {'bg': 'black'})
+        #             # this changes the font color of all items
+        #             self.lb[i].itemconfig(index, {'foreground': 'wheat'})
+        # except Exception as e:
+        #     pass
 
         if scroll_vertically:
             if yscrollbar is not None:
@@ -301,7 +413,7 @@ class Scrolling_Area(Frame, object):
             self.innerframe.place(y=-self._startY, relheight=relheight)
 
         lo = self._startY / frameHeight
-        self.yscrollbar.set(lo, hi)
+        # self.yscrollbar.set(lo, hi)
 
 
 class GUI(Frame):
@@ -349,44 +461,18 @@ class GUI(Frame):
         self.automated_listbox_creation()
 
     def automated_listbox_creation(self):
+
         self.Frame1.destroy()
         if self.vsb:
             self.vsb.destroy()
         if self.hsb:
             self.hsb.destroy()
         self.Frame1 = tk.Frame(root, background="black")
-        self.Frame1.place(x=200, y=30, relheight=0.930, relwidth=0.900)
+        self.Frame1.place(x=200, y=30, relheight=0.930, relwidth=0.800)
         # open scrollable frame window
         self.scrolling_area = Scrolling_Area(self.Frame1)
         self.scrolling_area.pack(expand=True, fill="both")
-        # self.Frame1 = tk.Frame(self.scrolling_area.innerframe, background="black")
-        # self.Frame1.place(x=200, y=30, relheight=0.930, relwidth=0.900)
-        # Scrollbar config
-        self.vsb = tk.Scrollbar(root, orient="vertical", command=self.on_vsb)
-        # self.hsb = tk.Scrollbar(root, orient="horizontal", command=self.on_hsb)
-        self.vsb.pack(side="right", fill="y")
-        # self.vsb.config()   # TODO
-        # self.hsb.pack(side="bottom", fill="x")
 
-        self.lb = {}
-        for i in range(self.x):
-            self.listbox = tk.Listbox(self.scrolling_area.innerframe, yscrollcommand=self.vsb.set,
-                                      width=14, relief="sunken")
-            self.listbox.pack(side="left", fill="y", expand=False)
-            self.lb[i] = self.listbox
-            for index, dat in enumerate(self.data):
-                self.lb[i].insert(index, dat[i])
-                self.lb[i].bind("<MouseWheel>", self.on_mouse_wheel)
-                index += 1
-        try:
-            for i in range(self.x):
-                for index, data in enumerate(self.data):
-                    # this changes the background colour of all items
-                    self.lb[i].itemconfig(index, {'bg': 'black'})
-                    # this changes the font color of all items
-                    self.lb[i].itemconfig(index, {'foreground': 'wheat'})
-        except Exception as e:
-            pass
 
     def __init__(self, master, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
@@ -406,46 +492,46 @@ class GUI(Frame):
         self.listbox = None
 
         # labels:
-        self.label1 = tk.Label(root, text="Imię")
-        self.label1.place(x=200, y=1, height=30, width=100)
-        self.label2 = tk.Label(root, text="Nazwisko")
-        self.label2.place(x=285, y=1, height=30, width=100)
-        self.label3 = tk.Label(root, text="Miesiąc")
-        self.label3.place(x=375, y=1, height=30, width=100)
-        self.label4 = tk.Label(root, text="Przyjazd")
-        self.label4.place(x=460, y=1, height=30, width=100)
-        self.label5 = tk.Label(root, text="Wyjazd")
-        self.label5.place(x=550, y=1, height=30, width=100)
-        self.label6 = tk.Label(root, text="Kwota całk")
-        self.label6.place(x=640, y=1, height=30, width=100)
-        self.label6 = tk.Label(root, text="Kwota ra")
-        self.label6.place(x=725, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Booking")
-        self.label7.place(x=810, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="VAT")
-        self.label7.place(x=900, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Pod. miej.")
-        self.label7.place(x=985, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Koszty")
-        self.label7.place(x=1075, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Prezent")
-        self.label7.place(x=1160, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Sprzątanie")
-        self.label7.place(x=1250, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="APARTAMENT")
-        self.label7.place(x=1340, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Depozyt")
-        self.label7.place(x=1425, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Dokument")
-        self.label7.place(x=1515, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Opłacone")
-        self.label7.place(x=1600, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Dopłata")
-        self.label7.place(x=1690, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Prowizja")
-        self.label7.place(x=1780, y=1, height=30, width=100)
-        self.label7 = tk.Label(root, text="Czas rez.")
-        self.label7.place(x=1870, y=1, height=30, width=100)
+        # self.label1 = tk.Label(root, text="Imię")
+        # self.label1.place(x=200, y=1, height=30, width=100)
+        # self.label2 = tk.Label(root, text="Nazwisko")
+        # self.label2.place(x=285, y=1, height=30, width=100)
+        # self.label3 = tk.Label(root, text="Miesiąc")
+        # self.label3.place(x=375, y=1, height=30, width=100)
+        # self.label4 = tk.Label(root, text="Przyjazd")
+        # self.label4.place(x=460, y=1, height=30, width=100)
+        # self.label5 = tk.Label(root, text="Wyjazd")
+        # self.label5.place(x=550, y=1, height=30, width=100)
+        # self.label6 = tk.Label(root, text="Kwota całk")
+        # self.label6.place(x=640, y=1, height=30, width=100)
+        # self.label6 = tk.Label(root, text="Kwota ra")
+        # self.label6.place(x=725, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Booking")
+        # self.label7.place(x=810, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="VAT")
+        # self.label7.place(x=900, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Pod. miej.")
+        # self.label7.place(x=985, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Koszty")
+        # self.label7.place(x=1075, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Prezent")
+        # self.label7.place(x=1160, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Sprzątanie")
+        # self.label7.place(x=1250, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="APARTAMENT")
+        # self.label7.place(x=1340, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Depozyt")
+        # self.label7.place(x=1425, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Dokument")
+        # self.label7.place(x=1515, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Opłacone")
+        # self.label7.place(x=1600, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Dopłata")
+        # self.label7.place(x=1690, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Prowizja")
+        # self.label7.place(x=1780, y=1, height=30, width=100)
+        # self.label7 = tk.Label(root, text="Czas rez.")
+        # self.label7.place(x=1870, y=1, height=30, width=100)
 
         self.lb = {}
         self.data = self.read_from_database()

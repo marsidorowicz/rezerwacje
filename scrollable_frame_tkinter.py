@@ -28,7 +28,21 @@
 # root.mainloop()
 
 import tkinter as tk
+import tkinter
 from tkinter import ttk
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+try:
+    from Tkinter import Frame, Label, Message, StringVar, Canvas
+    from ttk import Scrollbar
+    from Tkconstants import *
+except ImportError:
+    from tkinter import Frame, Label, Message, StringVar, Canvas
+    from tkinter.ttk import Scrollbar
+    from tkinter.constants import *
+
+
+import platform
 
 
 class ScrollableFrame(ttk.Frame):
@@ -58,13 +72,42 @@ class ScrollableFrame(ttk.Frame):
         self.canvas.pack(side="left", fill="both", expand=True)
         self.scrollbar.pack(side="right", fill="y")
 
+        scope = 'https://spreadsheets.google.com/feeds https://googleapis.com/auth/drive'
+        cred = ServiceAccountCredentials.from_json_keyfile_name(
+            'E:\\Programowanie\plucky-avatar-282313-93e0d7031067.json')
+
+        gs = gspread.authorize(cred)
+
+        kontr = gs.open('Kontrahenci2020').sheet1
+
+        rows = kontr.get()
+
+        self.data = []
+        for index, dat in enumerate(self.data):
+            self.x = len(dat)
+        self.lb = {}
+        for i in range(20):
+            listbox = tk.Listbox(self.scrollbar, width=14, relief="sunken", height=500)
+            listbox.pack(side="left", fill="y", expand=True)
+            self.lb[i] = listbox
+
+        for i, dat in enumerate(rows[0]):
+
+            try:
+                self.lb[i].insert(i, dat)
+                self.lb[i].itemconfig(0, {'bg': 'black'})
+                self.lb[i].itemconfig(0, {'foreground': 'wheat'})
+                self.lb[i].configure(justify=CENTER)
+            except Exception as e:
+                pass
+
 
 root = tk.Tk()
 
 frame = ScrollableFrame(root)
 
-for i in range(50):
-    ttk.Label(frame.scrollable_frame, text="Sample scrolling label").pack()
+
+
 
 frame.pack()
 root.mainloop()

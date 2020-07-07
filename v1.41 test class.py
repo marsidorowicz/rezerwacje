@@ -21,6 +21,23 @@ except ImportError:
 
 
 import platform
+import gspread
+from decimal import Decimal
+from oauth2client.service_account import ServiceAccountCredentials
+
+scope = ['https://spreadsheets.google.com/feeds', 'https://googleapis.com/auth/drive']
+
+cred = ServiceAccountCredentials.from_json_keyfile_name('E:\\Programowanie\plucky-avatar-282313-fde633742ea2.json')
+
+gs = gspread.authorize(cred)
+
+kontr = gs.open('Kontrahenci2020').sheet1
+
+rows = kontr.get()
+
+list1 = []
+
+
 
 OS = platform.system()
 
@@ -37,6 +54,9 @@ class Mousewheel_Support(object):
     def __init__(self, root, horizontal_factor=2, vertical_factor=2):
 
         self._active_area = None
+
+
+
 
         if isinstance(horizontal_factor, int):
             self.horizontal_factor = horizontal_factor
@@ -139,6 +159,36 @@ class Scrolling_Area(Frame, object):
 
         self.innerframe = inner_frame(self._clipper, padx=0, pady=0, highlightthickness=0)
         self.innerframe.place(in_=self._clipper, x=0, y=0)
+
+        connection = sqlite3.connect('r.sqlite')
+        cur = connection.cursor()
+
+        def read_from_database():
+            cur.execute("SELECT * FROM reservations")
+            return cur.fetchall()
+
+        self.data = read_from_database()
+        for index, dat in enumerate(self.data):
+            self.x = len(dat)
+        self.lb = {}
+        for i in range(self.x):
+            listbox = Listbox(self.innerframe, width=14, relief="sunken", height=500)
+            listbox.pack(side="left", fill="y", expand=True)
+            self.lb[i] = listbox
+            for index, dat in enumerate(self.data):
+                self.lb[i].insert(index, dat[i])
+                # lb[i].bind("<MouseWheel>", on_mouse_wheel)
+                index += 1
+
+        try:
+            for i in range(self.x):
+                for index, data in enumerate(self.data):
+                    # this changes the background colour of all items
+                    self.lb[i].itemconfig(index, {'bg': 'black'})
+                    # this changes the font color of all items
+                    self.lb[i].itemconfig(index, {'foreground': 'wheat'})
+        except Exception as e:
+            pass
 
         if scroll_vertically:
             if yscrollbar is not None:
@@ -301,7 +351,7 @@ class Scrolling_Area(Frame, object):
             self.innerframe.place(y=-self._startY, relheight=relheight)
 
         lo = self._startY / frameHeight
-        self.yscrollbar.set(lo, hi)
+        # self.yscrollbar.set(lo, hi)
 
 
 class GUI(Frame):
@@ -362,22 +412,22 @@ class GUI(Frame):
         # self.Frame1 = tk.Frame(self.scrolling_area.innerframe, background="black")
         # self.Frame1.place(x=200, y=30, relheight=0.930, relwidth=0.900)
         # Scrollbar config
-        self.vsb = tk.Scrollbar(root, orient="vertical", command=self.on_vsb)
-        # self.hsb = tk.Scrollbar(root, orient="horizontal", command=self.on_hsb)
-        self.vsb.pack(side="right", fill="y")
+        # self.vsb = tk.Scrollbar(root, orient="vertical", command=self.on_vsb)
+        # # self.hsb = tk.Scrollbar(root, orient="horizontal", command=self.on_hsb)
+        # self.vsb.pack(side="right", fill="y")
         # self.vsb.config()   # TODO
         # self.hsb.pack(side="bottom", fill="x")
 
-        self.lb = {}
-        for i in range(self.x):
-            self.listbox = tk.Listbox(self.scrolling_area.innerframe, yscrollcommand=self.vsb.set,
-                                      width=14, relief="sunken")
-            self.listbox.pack(side="left", fill="y", expand=False)
-            self.lb[i] = self.listbox
-            for index, dat in enumerate(self.data):
-                self.lb[i].insert(index, dat[i])
-                self.lb[i].bind("<MouseWheel>", self.on_mouse_wheel)
-                index += 1
+        # self.lb = {}
+        # for i in range(self.x):
+        #     self.listbox = tk.Listbox(self.scrolling_area.innerframe, yscrollcommand=self.vsb.set,
+        #                               width=14, height=600, relief="sunken")
+        #     self.listbox.pack(side="left", fill="y", expand=False)
+        #     self.lb[i] = self.listbox
+        #     for index, dat in enumerate(self.data):
+        #         self.lb[i].insert(index, dat[i])
+        #         self.lb[i].bind("<MouseWheel>", self.on_mouse_wheel)
+        #         index += 1
         try:
             for i in range(self.x):
                 for index, data in enumerate(self.data):

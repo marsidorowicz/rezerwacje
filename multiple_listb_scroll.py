@@ -87,70 +87,70 @@
 from tkinter import *
 
 
-class ScrollBar:
-
-    # constructor
-    def __init__(self):
-        # create root window
-        root = Tk()
-        root.geometry("900x600+300+300")
-        frame = Frame(root, width=850, height=500, bg="green")
-        frame.pack(side="left", fill=BOTH, expand=True)
-
-        # create a horizontal scrollbar by
-        # setting orient to horizontal
-        h = Scrollbar(frame, orient='horizontal')
-
-        # attach Scrollbar to root window at
-        # the bootom
-        h.pack(side=BOTTOM, fill=X)
-
-        # create a vertical scrollbar-no need
-        # to write orient as it is by
-        # default vertical
-        v = Scrollbar(frame, orient='vertical')
-
-        # attach Scrollbar to root window on
-        # the side
-        v.pack(side=RIGHT, fill=Y)
-
-        # create a Text widget with 15 chars
-        # width and 15 lines height
-        # here xscrollcomannd is used to attach Text
-        # widget to the horizontal scrollbar
-        # here yscrollcomannd is used to attach Text
-        # widget to the vertical scrollbar
-        t = Text(frame, width=15, height=15, wrap=NONE,
-                 xscrollcommand=h.set,
-                 yscrollcommand=v.set)
-
-        # insert some text into the text widget
-        for i in range(20):
-            t.insert(END, "this is some text\n")
-
-        # attach Text widget to root window at top
-        t.pack(side=TOP, fill=X)
-
-        # here command represents the method to
-        # be executed xview is executed on
-        # object 't' Here t may represent any
-        # widget
-        h.config(command=t.xview)
-
-        # here command represents the method to
-        # be executed yview is executed on
-        # object 't' Here t may represent any
-        # widget
-        v.config(command=t.yview)
-
-        # the root window handles the mouse
-        # click event
-        root.mainloop()
-
-    # create an object to Scrollbar class
-
-
-s = ScrollBar()
+# class ScrollBar:
+#
+#     # constructor
+#     def __init__(self):
+#         # create root window
+#         root = Tk()
+#         root.geometry("900x600+300+300")
+#         frame = Frame(root, width=850, height=500, bg="green")
+#         frame.pack(side="left", fill=BOTH, expand=True)
+#
+#         # create a horizontal scrollbar by
+#         # setting orient to horizontal
+#         h = Scrollbar(frame, orient='horizontal')
+#
+#         # attach Scrollbar to root window at
+#         # the bootom
+#         h.pack(side=BOTTOM, fill=X)
+#
+#         # create a vertical scrollbar-no need
+#         # to write orient as it is by
+#         # default vertical
+#         v = Scrollbar(frame, orient='vertical')
+#
+#         # attach Scrollbar to root window on
+#         # the side
+#         v.pack(side=RIGHT, fill=Y)
+#
+#         # create a Text widget with 15 chars
+#         # width and 15 lines height
+#         # here xscrollcomannd is used to attach Text
+#         # widget to the horizontal scrollbar
+#         # here yscrollcomannd is used to attach Text
+#         # widget to the vertical scrollbar
+#         t = Text(frame, width=15, height=15, wrap=NONE,
+#                  xscrollcommand=h.set,
+#                  yscrollcommand=v.set)
+#
+#         # insert some text into the text widget
+#         for i in range(20):
+#             t.insert(END, "this is some text\n")
+#
+#         # attach Text widget to root window at top
+#         t.pack(side=TOP, fill=X)
+#
+#         # here command represents the method to
+#         # be executed xview is executed on
+#         # object 't' Here t may represent any
+#         # widget
+#         h.config(command=t.xview)
+#
+#         # here command represents the method to
+#         # be executed yview is executed on
+#         # object 't' Here t may represent any
+#         # widget
+#         v.config(command=t.yview)
+#
+#         # the root window handles the mouse
+#         # click event
+#         root.mainloop()
+#
+#     # create an object to Scrollbar class
+#
+#
+# s = ScrollBar()
 
 from tkinter import *
 
@@ -170,7 +170,7 @@ h.pack(side=BOTTOM, fill=X)
 v = Scrollbar(master, orient='vertical')
 v.pack(side=RIGHT, fill=Y)
 
-w = Text(frame, width=500, height=500, xscrollcommand=h.set, yscrollcommand=v.set)
+w = Text(frame, width=500, height=500, wrap=NONE, xscrollcommand=h.set, yscrollcommand=v.set)
 w.insert(END, text1)
 w.pack()
 
