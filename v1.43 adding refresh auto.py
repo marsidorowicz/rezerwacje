@@ -428,7 +428,7 @@ class GUI(Frame):
 
         self.automated_listbox_creation()
 
-    def clock1(self, text=None):
+    def refresh_google_sheet(self, text=None):
 
         print("Connecting to google sheet apartamentymsc@gmail.com")
         cred = ServiceAccountCredentials.from_json_keyfile_name(
@@ -468,10 +468,11 @@ class GUI(Frame):
                         print("Content up to date...")
                 except Exception as e:
                     print("There was problem with new content data, some data required is missing...")
-        root.after(100000, self.clock1)  # run itself again after 1000 ms
+        root.after(7200000, self.refresh_google_sheet)  # run itself again after 1000 ms
 
     def clock(self, text=None):
-        self.time = datetime.datetime.now().strftime("Czas: %H:%M:%S")
+        self.time = datetime.datetime.now().strftime("Czas: %H:%M:%S"), datetime.datetime.today().year,\
+                    datetime.datetime.today().month, datetime.datetime.today().day
         self.lab.config(text=self.time)
         # lab['text'] = time
         root.after(1000, self.clock)  # run itself again after 1000 ms
@@ -491,9 +492,9 @@ class GUI(Frame):
         self.lab = Label(root)
         self.lab.place(x=200, y=0)
 
-        # run first time
+        # run first time automatic tasks
         self.clock()
-        self.clock1()
+        self.refresh_google_sheet()
 
     def refresh_automatically(self):
         import sched

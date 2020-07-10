@@ -409,25 +409,8 @@ class GUI(Frame):
         # open scrollable frame window
         self.scrolling_area = Scrolling_Area(self.Frame1)
         self.scrolling_area.pack(expand=True, fill="both")
-        # self.Frame1 = tk.Frame(self.scrolling_area.innerframe, background="black")
-        # self.Frame1.place(x=200, y=30, relheight=0.930, relwidth=0.900)
-        # Scrollbar config
-        # self.vsb = tk.Scrollbar(root, orient="vertical", command=self.on_vsb)
-        # # self.hsb = tk.Scrollbar(root, orient="horizontal", command=self.on_hsb)
-        # self.vsb.pack(side="right", fill="y")
-        # self.vsb.config()   # TODO
-        # self.hsb.pack(side="bottom", fill="x")
 
-        # self.lb = {}
-        # for i in range(self.x):
-        #     self.listbox = tk.Listbox(self.scrolling_area.innerframe, yscrollcommand=self.vsb.set,
-        #                               width=14, height=600, relief="sunken")
-        #     self.listbox.pack(side="left", fill="y", expand=False)
-        #     self.lb[i] = self.listbox
-        #     for index, dat in enumerate(self.data):
-        #         self.lb[i].insert(index, dat[i])
-        #         self.lb[i].bind("<MouseWheel>", self.on_mouse_wheel)
-        #         index += 1
+
         try:
             for i in range(self.x):
                 for index, data in enumerate(self.data):

@@ -365,8 +365,7 @@ class GUI(Frame):
         self.vsb = tk.Scrollbar(root, orient="vertical", command=self.on_vsb)
         # self.hsb = tk.Scrollbar(root, orient="horizontal", command=self.on_hsb)
         self.vsb.pack(side="right", fill="y")
-        # self.vsb.config()   # TODO
-        # self.hsb.pack(side="bottom", fill="x")
+
 
         self.lb = {}
         for i in range(self.x):
