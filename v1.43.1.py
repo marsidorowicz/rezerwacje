@@ -436,7 +436,7 @@ class GUI(Frame):
                         print("Content up to date...")
                 except Exception as e:
                     print("There was problem with new content data, some data required is missing...")
-        root.after(5000, GUI.refresh_google_sheet)  # run itself again after 1000 ms
+        root.after(7200000, GUI.refresh_google_sheet)  # run itself again after 1000 ms
         return rows
 
     def clock(self, text=None):
