@@ -149,14 +149,14 @@ class Scrolling_Area(Frame, object):
         self.lenrows = len(rows)
 
         self.lb = {}
-        for i in range(len(rows[0])):
+        for i in range(len(rows[0])+1):
             listbox = Listbox(self.innerframe, width=25, relief="sunken", height=self.lenrows)
             listbox.pack(side="left", fill="y", expand=True)
             self.lb[i] = listbox
 
         # set width for specific listbox
         for row in rows:
-            for i in range(len(rows[0])):
+            for i in range(len(rows[0])+1):
                 try:
                     self.lb[i].insert(END, row[i])
                     if i < 10:
@@ -174,7 +174,7 @@ class Scrolling_Area(Frame, object):
                 except Exception as e:
                     pass
         # set color and bg for specific listbox
-        for i in range(len(rows[0])):
+        for i in range(len(rows[0])+1):
             for b in range(1, len(rows)):
                 try:
                     self.lb[i].itemconfig(b, {'bg': 'black'})
@@ -502,7 +502,7 @@ class GUI(Frame):
         # check if year is ending, if so download new year reservations from January
         if today.month == 12:
             if today.day == 24:
-                print("Niedługo nowy rok, pobieram nowe rezerwacje z roku {}".format(today.year+1)) #TODO new year
+                print("Niedługo nowy rok, pobieram nowe rezerwacje z roku {}".format(today.year+1))
                 for row in rows:
                     if months[0] in row:
                         if str(today.year+1) in row:
@@ -515,7 +515,6 @@ class GUI(Frame):
                             except Exception as e:
                                 print("There was problem with new content data, some data required is missing...")
         print("Content seems up to date...")
-        print(months[0])
         root.after(7200000, GUI.refresh_google_sheet)  # run itself again after 1000 ms
         return rows
 
