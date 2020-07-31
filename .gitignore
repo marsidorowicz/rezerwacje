@@ -1,6 +1,7 @@
 /SQLite_Python.db
 /.git/
 /.idea/
+/dist/
 /r.sqlite
 /v1.42 google sheet add.py
 /v1.43 adding refresh auto.py
