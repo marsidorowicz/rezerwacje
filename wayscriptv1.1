@@ -1,0 +1,188 @@
+# connect a variable above and read its value from the variables dictionary:
+
+import datetime
+import calendar
+
+def check_if_last_day_of_month(date):
+
+  #  calendar.monthrange return a tuple (weekday of first day of the
+  #  month, number
+  #  of days in month)
+  last_day_of_month = calendar.monthrange(date.year, date.month)[1]
+  # here i check if date is last day of month
+  print(last_day_of_month)
+  if date == datetime.date(date.year, date.month, last_day_of_month):
+    return True
+  return False
+
+
+
+months = ['STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC', 'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ', 'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ']
+today = datetime.datetime.today()
+actual_month_name = months[today.month-1]
+month_before_name = months[today.month-2]
+month_after_name = months[today.month]
+#date = today.year, today.month, today.day
+last_day_of_month = calendar.monthrange(today.year, today.month)[1]
+
+# NASZE
+try:
+
+  #  print("Dziś ostatni dzień miesiąca, sprawdzam czy w następnym miesiącu pierwszego dnia jest jakiś przyjazd")
+  for i in range(len(󰀂v.11-Column_0󰀂)):
+  #print("Apartament: {}, Nazwisko: {}, Przyjazd: {}, Wyjazd: {}, Miesiąc".format(󰀂v.13-Column_2󰀂[i], 󰀂v.12-Column_1󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+    if int(󰀂v.15-Column_4󰀂[i]) == today.day+1:  # var check if cleaning is tomorrow
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'GÓRSKI' in 󰀂v.13-Column_2󰀂[i] or 'CICHA' in 󰀂v.13-Column_2󰀂[i] or 'KASPROWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SIENKIEWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SŁONECZNY' in 󰀂v.13-Column_2󰀂[i] or 'PARASOL' in 󰀂v.13-Column_2󰀂[i] or 'KĄCIK' in 󰀂v.13-Column_2󰀂[i] or 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i] or 'GIEWONT' in 󰀂v.13-Column_2󰀂[i] or 'CLASSIC' in 󰀂v.13-Column_2󰀂[i] or 'ZIELONY' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'POMORSKA' in 󰀂v.13-Column_2󰀂[i]:
+          x = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.22-sprzatania󰀂.append(x)
+          print("Wyjazdy nasze: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+    if int(󰀂v.15-Column_4󰀂[i]) == today.day:  # var check if departure was today and remind to unlock deposit
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'GÓRSKI' in 󰀂v.13-Column_2󰀂[i] or 'CICHA' in 󰀂v.13-Column_2󰀂[i] or 'KASPROWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SIENKIEWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SŁONECZNY' in 󰀂v.13-Column_2󰀂[i] or 'PARASOL' in 󰀂v.13-Column_2󰀂[i] or 'KĄCIK' in 󰀂v.13-Column_2󰀂[i] or 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i] or 'GIEWONT' in 󰀂v.13-Column_2󰀂[i] or 'CLASSIC' in 󰀂v.13-Column_2󰀂[i] or 'ZIELONY' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'HM2' in 󰀂v.13-Column_2󰀂[i] or 'HONEYSUN' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i] or 'POMORSKA' in 󰀂v.13-Column_2󰀂[i] or 'GOŚCINNY' in 󰀂v.13-Column_2󰀂[i] or 'FOLK' in 󰀂v.13-Column_2󰀂[i] or 'CS' in 󰀂v.13-Column_2󰀂[i] or 'MO' in 󰀂v.13-Column_2󰀂[i]:
+          z = ("|||Odblokuj kaucję: {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.36-kaucja󰀂.append(z)
+          print("Odblokuj kaucję: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], "Nazwisko: ", 󰀂v.12-Column_1󰀂[i])
+  # CHECK IF TODAY IS THE LAST DAY OF MONTH
+  if today.day == last_day_of_month:
+    print("To ostatni dzień miesiąca, sprawdzam czy w pierwszym dniu miesiąca następnego jest wyjazd lub przyjazd")
+    for i in range(len(󰀂v.11-Column_0󰀂)):
+      if 󰀂v.11-Column_0󰀂[i] == month_after_name:
+        if int(󰀂v.15-Column_4󰀂[i]) == 1:
+          # FOR US DEPARTURES
+          if 'GÓRSKI' in 󰀂v.13-Column_2󰀂[i] or 'CICHA' in 󰀂v.13-Column_2󰀂[i] or 'KASPROWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SIENKIEWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SŁONECZNY' in 󰀂v.13-Column_2󰀂[i] or 'PARASOL' in 󰀂v.13-Column_2󰀂[i] or 'KĄCIK' in 󰀂v.13-Column_2󰀂[i] or 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i] or 'GIEWONT' in 󰀂v.13-Column_2󰀂[i] or 'CLASSIC' in 󰀂v.13-Column_2󰀂[i] or 'ZIELONY' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'POMORSKA' in 󰀂v.13-Column_2󰀂[i]:
+            sprzatania_pierwszego = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.22-sprzatania󰀂.append(sprzatania_pierwszego)
+            print("Wyjazdy nasze pierwszego dnia miesiąca następnego (koniec miesiąca dzisiaj): ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+          # FOR ELA DEPARTURES
+          if 'HM2' in 󰀂v.13-Column_2󰀂[i] or 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'FOLK' in 󰀂v.13-Column_2󰀂[i] or 'CS' in 󰀂v.13-Column_2󰀂[i] or 'MO' in 󰀂v.13-Column_2󰀂[i]:
+            ela_departures = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.25-sprzatania_ela󰀂.append(ela_departures)
+            print("Wyjazdy ELI pierwszego (koniec miesiąca): ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+          # FOR ASIA DEPARTURES
+          if 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i]:
+            asia_departures = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.29-sprzatania_asia󰀂.append(asia_departures)
+            print("Wyjazdy Asi pierwszego (koniec miesiąca): ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+          # FOR ANIA DEPARTURES
+          if 'ZIELONY' in 󰀂v.13-Column_2󰀂[i]:
+            ania_departures = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.30-sprzatania_ania_sopot󰀂.append(ania_departures)
+            print("Wyjazdy Ani Sopot pierwszego (dziś koniec miesiąca): ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+          # FOR SMREKOWA DEPARTURES
+          if 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i]:
+            smrekowa_departures = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.74-wyjazdy_smrekowa󰀂.append(smrekowa_departures)
+            print("Wyjazdy Smrekowa pierwszego (koniec miesiąca): ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+        # FOR US ARRIVALS
+        if float(󰀂v.14-Column_3󰀂[i]) == 1:
+          if 'GÓRSKI' in 󰀂v.13-Column_2󰀂[i] or 'CICHA' in 󰀂v.13-Column_2󰀂[i] or 'KASPROWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SIENKIEWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SŁONECZNY' in 󰀂v.13-Column_2󰀂[i] or 'PARASOL' in 󰀂v.13-Column_2󰀂[i] or 'KĄCIK' in 󰀂v.13-Column_2󰀂[i] or 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i] or 'GIEWONT' in 󰀂v.13-Column_2󰀂[i] or 'CLASSIC' in 󰀂v.13-Column_2󰀂[i] or 'ZIELONY' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'POMORSKA' in 󰀂v.13-Column_2󰀂[i] or 'GOŚCINNY' in 󰀂v.13-Column_2󰀂[i]:
+            przyjazdy_pierwszego = ("||| {}, Przyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.21-przyjazdy󰀂.append(przyjazdy_pierwszego)
+            print("Przyjazdy nasze pierwszego (dziś koniec miesiąca): ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i])
+          # FOR ELA ARRIVALS
+          if 'HM2' in 󰀂v.13-Column_2󰀂[i] or 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'FOLK' in 󰀂v.13-Column_2󰀂[i] or 'CS' in 󰀂v.13-Column_2󰀂[i] or 'MO' in 󰀂v.13-Column_2󰀂[i]:
+            ela_arrivals = ("||| {}, Przyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.24-przyjazdy_ela󰀂.append(ela_arrivals)
+            print("Przyjazdy ELI pierszego (koniec miesiąca): ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i])
+          # FOR ESTERA ARRIVALS
+          if 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i]:
+            estera_arrivals = ("||| {}, Przyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.28-przyjazdy_estera󰀂.append(estera_arrivals)
+            print("Przyjazdy Estery pierwszego (koniec miesiąca): ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i])
+          # FOR SMREKOWA ARRIVALS
+          if 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i]:
+            smrekowa_arrivals = ("||| {}, Przyjazd: {} - {}, do pobrania jest: {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i], 󰀂v.72-Column_6󰀂[i]))
+            󰀂v.73-przyjazdy_smrekowa󰀂.append(smrekowa_arrivals)
+            print("Przyjazdy SMREKOWA: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i])
+            print("Do pobrania SMREKOWA: {}".format(󰀂v.72-Column_6󰀂[i]))
+
+
+#INNYCH
+  for i in range(len(󰀂v.11-Column_0󰀂)):
+  #print("Apartament: {}, Nazwisko: {}, Przyjazd: {}, Wyjazd: {}, Miesiąc".format(󰀂v.13-Column_2󰀂[i], 󰀂v.12-Column_1󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+    if int(󰀂v.15-Column_4󰀂[i]) == today.day+1:  # var check if cleaning is tomorrow for ELA
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'HM2' in 󰀂v.13-Column_2󰀂[i] or 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'FOLK' in 󰀂v.13-Column_2󰀂[i] or 'CS' in 󰀂v.13-Column_2󰀂[i] or 'MO' in 󰀂v.13-Column_2󰀂[i]:
+          b = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.25-sprzatania_ela󰀂.append(b)
+          print("Wyjazdy ELI: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+  for i in range(len(󰀂v.11-Column_0󰀂)):
+    if int(󰀂v.15-Column_4󰀂[i]) == today.day+1:  # var check if cleaning is tomorrow for Asia
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i]:
+          c = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.29-sprzatania_asia󰀂.append(c)
+          print("Wyjazdy Asi: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+  for i in range(len(󰀂v.11-Column_0󰀂)):
+    if int(󰀂v.15-Column_4󰀂[i]) == today.day+1:  # var check if cleaning is tomorrow for Ania SOPOT
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'ZIELONY' in 󰀂v.13-Column_2󰀂[i]:
+          d = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.30-sprzatania_ania_sopot󰀂.append(d)
+          print("Wyjazdy Ani Sopot: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+  for i in range(len(󰀂v.11-Column_0󰀂)):
+    if int(󰀂v.15-Column_4󰀂[i]) == today.day+1:  # var check if cleaning is tomorrow for SMREKOWA
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i]:
+          e = ("||| {}, Wyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.74-wyjazdy_smrekowa󰀂.append(e)
+          print("Wyjazdy Smrekowa: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.15-Column_4󰀂[i])
+except Exception as e:
+  pass
+
+try:
+  for i in range(len(󰀂v.11-Column_0󰀂)):
+    #print(󰀂v.14-Column_3󰀂)
+    if 󰀂v.14-Column_3󰀂[i] > 󰀂v.15-Column_4󰀂[i]:  # var check if arrival was in previous month, write which reserv
+      pass
+      #print("Przyjazd we miesiącu poprzednim do wyjazdu: Apartament: {}, Nazwisko: {}, Przyjazd: {}, Wyjazd: {}, Miesiąc {}".format(󰀂v.13-Column_2󰀂[i], 󰀂v.12-Column_1󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+    if float(󰀂v.14-Column_3󰀂[i]) == today.day+1:  # var check if arrival is tomorrow
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'GÓRSKI' in 󰀂v.13-Column_2󰀂[i] or 'CICHA' in 󰀂v.13-Column_2󰀂[i] or 'KASPROWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SIENKIEWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SŁONECZNY' in 󰀂v.13-Column_2󰀂[i] or 'PARASOL' in 󰀂v.13-Column_2󰀂[i] or 'KĄCIK' in 󰀂v.13-Column_2󰀂[i] or 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i] or 'GIEWONT' in 󰀂v.13-Column_2󰀂[i] or 'CLASSIC' in 󰀂v.13-Column_2󰀂[i] or 'ZIELONY' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'POMORSKA' in 󰀂v.13-Column_2󰀂[i] or 'GOŚCINNY' in 󰀂v.13-Column_2󰀂[i]:
+          y = ("||| {}, Przyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.21-przyjazdy󰀂.append(y)
+          print("Przyjazdy nasze: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i])
+    if 󰀂v.11-Column_0󰀂[i] == month_after_name:
+      if float(󰀂v.14-Column_3󰀂[i]) > float(󰀂v.15-Column_4󰀂[i]):
+        if float(󰀂v.14-Column_3󰀂[i]) == today.day+1:  #var check if tomorrow arrival is described as next month departure
+          print("Przyjazd w miesiącu poprzednim do wyjazdu: Apartament: {}, Nazwisko: {}, Przyjazd: {}, Wyjazd: {}, Miesiąc {}".format(󰀂v.13-Column_2󰀂[i], 󰀂v.12-Column_1󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          if 'GÓRSKI' in 󰀂v.13-Column_2󰀂[i] or 'CICHA' in 󰀂v.13-Column_2󰀂[i] or 'KASPROWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SIENKIEWICZA' in 󰀂v.13-Column_2󰀂[i] or 'SŁONECZNY' in 󰀂v.13-Column_2󰀂[i] or 'PARASOL' in 󰀂v.13-Column_2󰀂[i] or 'KĄCIK' in 󰀂v.13-Column_2󰀂[i] or 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i] or 'GIEWONT' in 󰀂v.13-Column_2󰀂[i] or 'CLASSIC' in 󰀂v.13-Column_2󰀂[i] or 'ZIELONY' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'POMORSKA' in 󰀂v.13-Column_2󰀂[i] or 'GOŚCINNY' in 󰀂v.13-Column_2󰀂[i]:
+            f = ("||| {}, Przyjazd z wyjazdem w nastęonym miesiącu: {} - {}, {}, {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], actual_month_name, 󰀂v.12-Column_1󰀂[i], 󰀂v.13-Column_2󰀂[i]))
+            󰀂v.21-przyjazdy󰀂.append(f)
+            print("Przyjazdy z wyjazdem w następnym miesiącu: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i])
+    if float(󰀂v.14-Column_3󰀂[i]) == today.day+1:  # var check if arrival is tomorrow for ELA
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'HM2' in 󰀂v.13-Column_2󰀂[i] or 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'FOLK' in 󰀂v.13-Column_2󰀂[i] or 'CS' in 󰀂v.13-Column_2󰀂[i] or 'MO' in 󰀂v.13-Column_2󰀂[i]:
+          g = ("||| {}, Przyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.24-przyjazdy_ela󰀂.append(g)
+          print("Przyjazdy ELI: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i])
+    if 󰀂v.11-Column_0󰀂[i] == month_after_name:
+      if float(󰀂v.14-Column_3󰀂[i]) > float(󰀂v.15-Column_4󰀂[i]):
+        if float(󰀂v.14-Column_3󰀂[i]) == today.day+1:  #var check if tomorrow arrival is described as next month departure ELA
+          print("Przyjazd w miesiącu poprzednim do wyjazdu ELA: Apartament: {}, Nazwisko: {}, Przyjazd: {}, Wyjazd: {}, Miesiąc {}".format(󰀂v.13-Column_2󰀂[i], 󰀂v.12-Column_1󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          if 'HM2' in 󰀂v.13-Column_2󰀂[i] or 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i] or 'HONEYMOON' in 󰀂v.13-Column_2󰀂[i] or 'FOLK' in 󰀂v.13-Column_2󰀂[i] or 'CS' in 󰀂v.13-Column_2󰀂[i] or 'MO' in 󰀂v.13-Column_2󰀂[i]:
+            ela_next = ("||| {}, Przyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+            󰀂v.24-przyjazdy_ela󰀂.append(ela_next)
+    if float(󰀂v.14-Column_3󰀂[i]) == today.day+1:  # var check if arrival is tomorrow for Estera
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'HS' in 󰀂v.13-Column_2󰀂[i] or 'HSII' in 󰀂v.13-Column_2󰀂[i]:
+          h = ("||| {}, Przyjazd: {} - {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          󰀂v.28-przyjazdy_estera󰀂.append(h)
+          print("Przyjazdy Estery: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i])
+    if float(󰀂v.14-Column_3󰀂[i]) == today.day+1:  # var check if arrival is tomorrow for SMREKOWA
+      if 󰀂v.11-Column_0󰀂[i] == actual_month_name:
+        if 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i]:
+          i = ("||| {}, Przyjazd: {} - {}, do pobrania jest: {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i], 󰀂v.72-Column_6󰀂[i]))
+          󰀂v.73-przyjazdy_smrekowa󰀂.append(i)
+          print("Przyjazdy SMREKOWA: ", 󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i])
+          print("Do pobrania SMREKOWA: {}".format(󰀂v.72-Column_6󰀂[i]))
+    if 󰀂v.11-Column_0󰀂[i] == month_after_name:
+      if float(󰀂v.14-Column_3󰀂[i]) > float(󰀂v.15-Column_4󰀂[i]):
+        if float(󰀂v.14-Column_3󰀂[i]) == today.day+1:  #var check if tomorrow arrival is described as next month departure SMREKOWA
+          print("Przyjazd w miesiącu poprzednim do wyjazdu SMREKOWA: Apartament: {}, Nazwisko: {}, Przyjazd: {}, Wyjazd: {}, Miesiąc {}".format(󰀂v.13-Column_2󰀂[i], 󰀂v.12-Column_1󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.15-Column_4󰀂[i], 󰀂v.11-Column_0󰀂[i]))
+          if 'SMREKOWA' in 󰀂v.13-Column_2󰀂[i]:
+            j = ("||| {}, Przyjazd: {} - {}, do pobrania jest: {} |||".format(󰀂v.13-Column_2󰀂[i], 󰀂v.14-Column_3󰀂[i], 󰀂v.11-Column_0󰀂[i], 󰀂v.72-Column_6󰀂[i]))
+            󰀂v.73-przyjazdy_smrekowa󰀂.append(j)
+except Exception as e:
+  pass

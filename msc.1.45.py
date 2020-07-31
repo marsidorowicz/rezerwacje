@@ -478,7 +478,7 @@ class GUI(Frame):
     @staticmethod
     def refresh_google_sheet(text=None):
 
-        print("Connecting to google sheet apartamentymsc@gmail.com")
+        print("Connecting to google sheet ")
         cred = ServiceAccountCredentials.from_json_keyfile_name(
             'E:\\Programowanie\plucky-avatar-282313-93e0d7031067.json')
 
@@ -530,10 +530,17 @@ class GUI(Frame):
                     if str(today.year) in row:
                         try:
                             row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21]]
-                            if row_reduced not in rows_zapas:
-                                zapas.insert_row(row_reduced)
-                                print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
-                                print(row)
+                            if 'SMREKOWA' not in row:  # LATER SPECIAL CONDITIONS APLIED TO SMREKOWA ONLY
+                                if row_reduced not in rows_zapas:
+                                    zapas.insert_row(row_reduced)
+                                    print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
+                                    print(row)
+                            if 'SMREKOWA' in row:  # FOR SMREKOWA ADD TOTAL PRICE TO EMAIL
+                                row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21], row[0]]
+                                if row_reduced not in rows_zapas:
+                                    zapas.insert_row(row_reduced)
+                                    print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
+                                    print(row)
                         except Exception as e:
                             print("There was problem with new content data, some data required is missing...")
         # check if year is ending, if so download new year reservations from January
@@ -552,7 +559,7 @@ class GUI(Frame):
                             except Exception as e:
                                 print("There was problem with new content data, some data required is missing...")
         print("Content seems up to date...")
-        root.after(7200000, GUI.refresh_google_sheet)  # run itself again after 1000 ms
+        root.after(7200000, GUI.refresh_google_sheet)  # run itself again after 2hours
         return rows
 
     def clock(self, text=None):
@@ -1191,7 +1198,7 @@ class Authentication:
 
         frame = LabelFrame(self.root1, text='Login')
         frame.grid(row=1, column=1, columnspan=10, rowspan=10)
-        Label(frame, text=' Usename ').grid(row=2, column=1, sticky=W)
+        Label(frame, text=' Username ').grid(row=2, column=1, sticky=W)
         self.username = Entry(frame)
         self.username.focus()
         self.username.grid(row=2, column=2)
