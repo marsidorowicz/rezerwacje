@@ -5,6 +5,8 @@ from datetime import *
 from tkinter import *
 import platform
 import datetime
+import calendar
+
 import sched
 import time
 import gspread
@@ -159,6 +161,7 @@ class ScrollingArea(Frame, object):
         months = ['STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC', 'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ',
                   'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ']
         x = 0
+        dx = 0
         for row in rows:
 
             if 'NAZWISKO' in row and x == 0:    # To display column names only ones
@@ -186,23 +189,44 @@ class ScrollingArea(Frame, object):
                                 self.lb[i].configure(width=12)
                         except Exception as e:
                             pass
-
-                if months[today.month] in row:
-                    for i in range(len(rows[0])+1):  # check for next month content and show it in listbox
-                        try:
-                            self.lb[i].insert(END, row[i])
-                            if i < 13:
-                                self.lb[i].configure(width=12)
-                            if i == 14:
-                                self.lb[i].configure(width=15)
-                            if i == 15:
-                                self.lb[i].configure(width=18)
-                            if i == 16:
-                                self.lb[i].configure(width=13)
-                            if i > 17:
-                                self.lb[i].configure(width=12)
-                        except Exception as e:
-                            pass
+                if today.month != 12:
+                    if months[today.month] in row:
+                        for i in range(len(rows[0])+1):  # check for next month content and show it in listbox
+                            try:
+                                self.lb[i].insert(END, row[i])
+                                if i < 13:
+                                    self.lb[i].configure(width=12)
+                                if i == 14:
+                                    self.lb[i].configure(width=15)
+                                if i == 15:
+                                    self.lb[i].configure(width=18)
+                                if i == 16:
+                                    self.lb[i].configure(width=13)
+                                if i > 17:
+                                    self.lb[i].configure(width=12)
+                            except Exception as e:
+                                pass
+                if today.month == 12:   #todo uzupełnić funkcję o pobranie nowego miesiąca z przyszłego roku
+                    if dx <1:
+                        print("Bieżący rok dobiega końca, sprawdzam rezerwacje ze stycznia kolejnego roku")
+                        dx += 1
+                    if months[0] in row:
+                        if str((today.year)+1) in row:
+                            for i in range(len(rows[0]) + 1):  # check for next month content and show it in listbox
+                                try:
+                                    self.lb[i].insert(END, row[i])
+                                    if i < 13:
+                                        self.lb[i].configure(width=12)
+                                    if i == 14:
+                                        self.lb[i].configure(width=15)
+                                    if i == 15:
+                                        self.lb[i].configure(width=18)
+                                    if i == 16:
+                                        self.lb[i].configure(width=13)
+                                    if i > 17:
+                                        self.lb[i].configure(width=12)
+                                except Exception as e:
+                                    pass
         # set color and bg for specific listbox
         for i in range(len(rows[0])+1):
             for b in range(1, len(rows)):
@@ -432,6 +456,147 @@ class GUI(Frame):
         AUTHORITY = "https://login.microsoftonline.com/python-reservations"
 
     @staticmethod
+    def sort_events():
+        def check_if_last_day_of_month(date):
+            import datetime
+            import calendar
+            #  calendar.monthrange return a tuple (weekday of first day of the
+            #  month, number
+            #  of days in month)
+            last_day_of_month = calendar.monthrange(date.year, date.month)[1]
+            # here i check if date is last day of month
+            if date == datetime.date(date.year, date.month, last_day_of_month):
+                return True
+            return False
+
+        print("Connecting to google sheet zapas")
+        cred1 = ServiceAccountCredentials.from_json_keyfile_name(
+            'E:\\Programowanie\\wayscript\\send-emails-282415-a9f0e1e1227d.json')
+
+        gs1 = gspread.authorize(cred1)
+        print("Authentication successful, downloading content from sheet2")
+        zapas = gs1.open('Zapas1').sheet1
+        wydarzenia = gs1.open('Wydarzenia').sheet1
+
+        today = datetime.datetime.today()
+        months = ['STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC', 'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ',
+                  'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ']
+        date = datetime.date(today.year, today.month, today.day)
+        try:
+
+
+            rows_zapas = zapas.get()
+
+            # print("Dziś mamy: ", (months[today.month - 1]), (datetime.datetime.now()))
+            # for row in rows_zapas:
+            #     if months[today.month - 1] in row:
+            #         print(row)
+            # print("*" * 80)
+            # if today.month != 12:
+            #     for row in rows_zapas:
+            #         if months[today.month] in row:
+            #             print(row)
+            #     print("*" * 80)
+            # if today.month == 12:
+            #     print("To ostatni miesiąc roku")
+            #     for row in rows_zapas:
+            #         if str(today.year+1) in row:
+            #             print(row)
+            #     print("*" * 80)
+            # for row in rows_zapas:
+            #     if months[today.month - 1] in row:
+            #         if today.day in row:
+            #             pass
+            d = 0
+            events = []
+            print("Test dzisiejszego dnia")
+
+            # start counting from today up to and including the last day of the month
+            if today.month != 12:
+                while today.day+d <= calendar.monthrange(date.year, date.month)[1]:
+                    for row in rows_zapas:
+                        if str(today.day+d) in row:
+                            if months[today.month - 1] in row:
+                                if str(today.year) in row:  # make list of all events for this month in this year
+                                    if str(today.day+d) in row[3]:
+                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        print("PRZYJAZD")
+                                        print(row)
+                                        events.append(eventsa)
+                                    if str(today.day+d) in row[4]:
+                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        print("WYJAZD")
+                                        print(row)
+                                        events.append(eventsb)
+
+                    d += 1
+                # check next month to see if there are new events
+                d = 0
+                while today.day+d <= calendar.monthrange(date.year, date.month)[1]:
+                    for row in rows_zapas:
+                        if str(d) in row:
+                            if months[today.month] in row:
+                                if str(today.year) in row:  # make list of all events for this month in this year
+                                    if str(d) in row[3]:
+                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        print("PRZYJAZD")
+                                        print(row)
+                                        events.append(eventsa)
+                                    if str(d) in row[4]:
+                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        print("WYJAZD")
+                                        print(row)
+                                        events.append(eventsb)
+                    d += 1
+            else:
+                while today.day+d <= calendar.monthrange(date.year, date.month)[1]:
+                    for row in rows_zapas:
+                        if str(today.day+d) in row:
+                            if months[today.month - 1] in row:
+                                if str(today.year) in row:  # make list of all events for this month in this year
+                                    if str(today.day+d) in row[3]:
+                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        print("PRZYJAZD")
+                                        print(row)
+                                        events.append(eventsa)
+                                    if str(today.day+d) in row[4]:
+                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        print("WYJAZD")
+                                        print(row)
+                                        events.append(eventsb)
+                    d += 1
+                # check next month to see if there are new events
+                d = 0
+                while today.day+d <= calendar.monthrange(date.year, date.month)[1]:
+                    for row in rows_zapas:
+                        if str(d) in row:
+                            if months[0] in row:    # search for January events
+                                if str(today.year+1) in row:  # make list of all events from next year first month
+                                    if str(d) in row[3]:
+                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        print("PRZYJAZD")
+                                        print(row)
+                                        events.append(eventsa)
+                                    if str(d) in row[4]:
+                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        print("WYJAZD")
+                                        print(row)
+                                        events.append(eventsb)
+                    d += 1
+            events.reverse()
+
+            print("Clearing google sheet Wydarzenia")
+            wydarzenia.clear()
+            for item in events:
+                print(item)
+                wydarzenia.insert_row(item)
+
+        except Exception as e:
+            print("Błąd: ", e)
+
+
+
+    @staticmethod
     def refresh_google_sheet(text=None):
 
         print("Connecting to google sheet ")
@@ -503,19 +668,18 @@ class GUI(Frame):
                             print("There was problem with new content data, some data required is missing...")
         # check if year is ending, if so download new year reservations from January
         if today.month == 12:
-            if today.day == 20:
-                print("Niedługo nowy rok, pobieram nowe rezerwacje z roku {}".format(today.year+1))
-                for row in rows:
-                    if months[0] in row:
-                        if str(today.year+1) in row:
-                            try:
-                                row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21]]
-                                if row_reduced not in rows_zapas:
-                                    zapas.insert_row(row_reduced)
-                                    print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
-                                    print(row)
-                            except Exception as e:
-                                print("There was problem with new content data, some data required is missing...")
+            print("Niedługo nowy rok, pobieram nowe rezerwacje z roku {}".format(today.year+1))
+            for row in rows:
+                if months[0] in row:
+                    if str(today.year+1) in row:
+                        try:
+                            row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21]]
+                            if row_reduced not in rows_zapas:
+                                zapas.insert_row(row_reduced)
+                                print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
+                                print(row)
+                        except Exception as e:
+                            print("There was problem with new content data, some data required is missing...")
         print("Content seems up to date...")
         root.after(7200000, GUI.refresh_google_sheet)  # run itself again after 2hours
         return rows
@@ -571,7 +735,7 @@ class GUI(Frame):
         self.Home.place(relx=0.01, rely=0.015, height=34, width=137)
         self.Reservation_button = ttk.Button(root, text='''Dodaj rezerwację''', command=lambda: ReservationWindow())
         self.Reservation_button.place(relx=0.01, rely=0.088, height=34, width=137)
-        self.Button1_2 = ttk.Button(root, text='''Rozliczenie''', command=GUI.outlook_connection)
+        self.Button1_2 = ttk.Button(root, text='''Wydarzenia''', command=GUI.sort_events)
         self.Button1_2.place(relx=0.01, rely=0.161, height=34, width=137)
         self.Quit = ttk.Button(root, text='''Zamknij''', command=self.quit1)
         self.Quit.place(relx=0.01, rely=0.234, height=34, width=137)
