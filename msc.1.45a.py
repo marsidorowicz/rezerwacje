@@ -449,7 +449,6 @@ class GUI(Frame):
     def google_send_email(message="123", to="marsidorowicz@gmail.com"):
         import TestAI
 
-        #TestAI.sendmailgoogle("123", "marsidorowicz@gmail.com",)
         def check_if_last_day_of_month(date1):
             import datetime
             import calendar
@@ -478,14 +477,19 @@ class GUI(Frame):
 
         # this module check if there are events meeting requirements and if yes it sends email with it
         try:
+            row_send = []
+            row_new = ""
             rows_wydarzenia = wydarzenia.get()
             if today.day is not calendar.monthrange(today.year, today.month)[1]:
                 for row in rows_wydarzenia:
-                    if str(today.day+1) in row[6]: # requirement of departure at exact day
+                    if str(today.day+1) in row[7]: # requirement of departure at exact day
                         if months[today.month - 1] in row:
-                            row_new = row[0], row[1], row[2], row[7], row[4]
-                            TestAI.sendmailgoogle(row_new, "apartamentymsc@gmail.com")
-                            TestAI.sendmailgoogle(row_new, "lidiasidorowicz@gmail.com")
+                            row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                            row_send.append(row_new)
+
+            TestAI.sendmailgoogle(row_send, "apartamentymsc@gmail.com")
+            TestAI.sendmailgoogle(row_send, "lidiasidorowicz@gmail.com")
+            (print("Wysłano maile do Lidii i Mariusza"))
         except Exception as e:
             print("Błąd ", e)
 
@@ -760,7 +764,7 @@ class GUI(Frame):
         # menu
         self.Home = ttk.Button(root, text='''Strona główna''', command=self.refresh_main)
         self.Home.place(relx=0.01, rely=0.015, height=34, width=137)
-        self.Reservation_button = ttk.Button(root, text='''Dodaj rezerwację''',
+        self.Reservation_button = ttk.Button(root, text='''Wyślij maile''',
                                              command=lambda: GUI.google_send_email())
         self.Reservation_button.place(relx=0.01, rely=0.088, height=34, width=137)
         self.Button1_2 = ttk.Button(root, text='''Wydarzenia''', command=GUI.sort_events)
