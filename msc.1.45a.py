@@ -6,7 +6,8 @@ from tkinter import *
 import platform
 import datetime
 import calendar
-
+import schedule
+import time
 import sched
 import time
 import gspread
@@ -38,9 +39,6 @@ class Mousewheel_Support(object):
     def __init__(self, root, horizontal_factor=2, vertical_factor=2):
 
         self._active_area = None
-
-
-
 
         if isinstance(horizontal_factor, int):
             self.horizontal_factor = horizontal_factor
@@ -127,7 +125,6 @@ class Mousewheel_Support(object):
 
 
 class ScrollingArea(Frame, object):
-
 
     def __init__(self, master, width=None, height=None, mousewheel_speed=2, scroll_horizontally=True, xscrollbar=None,
                  scroll_vertically=True, yscrollbar=None, outer_background=None, inner_frame=Frame, **kw):
@@ -449,23 +446,62 @@ class GUI(Frame):
         self.automated_listbox_creation()
 
     @staticmethod
-    def outlook_connection():
+    def google_send_email(message="123", to="marsidorowicz@gmail.com"):
+        import TestAI
 
-        CLIENT_ID = "1cceed32-ae0b-47e7-8742-ba715c1f0c5d"
-        CLIENT_SECRET = "dSY4wy-5.Jfdn.FVh~TmVMnpVUK3yG656o"
-        AUTHORITY = "https://login.microsoftonline.com/python-reservations"
-
-    @staticmethod
-    def sort_events():
-        def check_if_last_day_of_month(date):
+        #TestAI.sendmailgoogle("123", "marsidorowicz@gmail.com",)
+        def check_if_last_day_of_month(date1):
             import datetime
             import calendar
             #  calendar.monthrange return a tuple (weekday of first day of the
             #  month, number
             #  of days in month)
-            last_day_of_month = calendar.monthrange(date.year, date.month)[1]
+            last_day_of_month = calendar.monthrange(date1.year, date1.month)[1]
             # here i check if date is last day of month
-            if date == datetime.date(date.year, date.month, last_day_of_month):
+            if date1 == datetime.date(date1.year, date1.month, last_day_of_month):
+                return True
+            return False
+
+        print("Connecting to google sheet zapas")
+        cred1 = ServiceAccountCredentials.from_json_keyfile_name(
+            'E:\\Programowanie\\wayscript\\send-emails-282415-a9f0e1e1227d.json')
+
+        gs1 = gspread.authorize(cred1)
+        print("Authentication successful, downloading content from sheet2")
+        zapas = gs1.open('Zapas1').sheet1
+        wydarzenia = gs1.open('Wydarzenia').sheet1
+
+        today = datetime.datetime.today()
+        months = ['STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC', 'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ',
+                  'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ']
+        date2 = datetime.date(today.year, today.month, today.day)
+
+        # this module check if there are events meeting requirements and if yes it sends email with it
+        try:
+            rows_wydarzenia = wydarzenia.get()
+            if today.day is not calendar.monthrange(today.year, today.month)[1]:
+                for row in rows_wydarzenia:
+                    if str(today.day+1) in row[6]: # requirement of departure at exact day
+                        if months[today.month - 1] in row:
+                            row_new = row[0], row[1], row[2], row[7], row[4]
+                            TestAI.sendmailgoogle(row_new, "apartamentymsc@gmail.com")
+                            TestAI.sendmailgoogle(row_new, "lidiasidorowicz@gmail.com")
+        except Exception as e:
+            print("Błąd ", e)
+
+    @staticmethod
+    def sort_events():
+
+
+        def check_if_last_day_of_month(date1):
+            import datetime
+            import calendar
+            #  calendar.monthrange return a tuple (weekday of first day of the
+            #  month, number
+            #  of days in month)
+            last_day_of_month = calendar.monthrange(date1.year, date1.month)[1]
+            # here i check if date is last day of month
+            if date1 == datetime.date(date1.year, date1.month, last_day_of_month):
                 return True
             return False
 
@@ -483,30 +519,7 @@ class GUI(Frame):
                   'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ']
         date = datetime.date(today.year, today.month, today.day)
         try:
-
-
             rows_zapas = zapas.get()
-
-            # print("Dziś mamy: ", (months[today.month - 1]), (datetime.datetime.now()))
-            # for row in rows_zapas:
-            #     if months[today.month - 1] in row:
-            #         print(row)
-            # print("*" * 80)
-            # if today.month != 12:
-            #     for row in rows_zapas:
-            #         if months[today.month] in row:
-            #             print(row)
-            #     print("*" * 80)
-            # if today.month == 12:
-            #     print("To ostatni miesiąc roku")
-            #     for row in rows_zapas:
-            #         if str(today.year+1) in row:
-            #             print(row)
-            #     print("*" * 80)
-            # for row in rows_zapas:
-            #     if months[today.month - 1] in row:
-            #         if today.day in row:
-            #             pass
             d = 0
             events = []
             print("Test dzisiejszego dnia")
@@ -519,12 +532,14 @@ class GUI(Frame):
                             if months[today.month - 1] in row:
                                 if str(today.year) in row:  # make list of all events for this month in this year
                                     if str(today.day+d) in row[3]:
-                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3],
+                                                   row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
                                     if str(today.day+d) in row[4]:
-                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3],
+                                                   row[4], row[5])
                                         print("WYJAZD")
                                         print(row)
                                         events.append(eventsb)
@@ -538,12 +553,14 @@ class GUI(Frame):
                             if months[today.month] in row:
                                 if str(today.year) in row:  # make list of all events for this month in this year
                                     if str(d) in row[3]:
-                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3],
+                                                   row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
                                     if str(d) in row[4]:
-                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3],
+                                                   row[4], row[5])
                                         print("WYJAZD")
                                         print(row)
                                         events.append(eventsb)
@@ -555,12 +572,14 @@ class GUI(Frame):
                             if months[today.month - 1] in row:
                                 if str(today.year) in row:  # make list of all events for this month in this year
                                     if str(today.day+d) in row[3]:
-                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        eventsa = ("PRZYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3],
+                                                   row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
                                     if str(today.day+d) in row[4]:
-                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3], row[4], row[5])
+                                        eventsb = ("WYJAZD DNIA", today.day+d, row[0], row[1], row[2], row[3],
+                                                   row[4], row[5])
                                         print("WYJAZD")
                                         print(row)
                                         events.append(eventsb)
@@ -593,6 +612,14 @@ class GUI(Frame):
 
         except Exception as e:
             print("Błąd: ", e)
+
+        import schedule
+        import time
+        def print_text():
+            print("Uruchamiam proces odświeżania codziennego listy wydarzeń")
+        schedule.every().day.at("19:28").do(print_text)
+
+        schedule.run_pending()
 
 
 
@@ -733,13 +760,15 @@ class GUI(Frame):
         # menu
         self.Home = ttk.Button(root, text='''Strona główna''', command=self.refresh_main)
         self.Home.place(relx=0.01, rely=0.015, height=34, width=137)
-        self.Reservation_button = ttk.Button(root, text='''Dodaj rezerwację''', command=lambda: ReservationWindow())
+        self.Reservation_button = ttk.Button(root, text='''Dodaj rezerwację''',
+                                             command=lambda: GUI.google_send_email())
         self.Reservation_button.place(relx=0.01, rely=0.088, height=34, width=137)
         self.Button1_2 = ttk.Button(root, text='''Wydarzenia''', command=GUI.sort_events)
         self.Button1_2.place(relx=0.01, rely=0.161, height=34, width=137)
         self.Quit = ttk.Button(root, text='''Zamknij''', command=self.quit1)
         self.Quit.place(relx=0.01, rely=0.234, height=34, width=137)
         self.automated_listbox_creation()
+
 
 
 class OpenToplevelWindow(Toplevel):
