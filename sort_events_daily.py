@@ -2,6 +2,9 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import calendar
+import schedule
+import time
+
 
 def sort_events():
     def check_if_last_day_of_month(date1):
@@ -127,14 +130,65 @@ def sort_events():
     except Exception as e:
         print("Błąd: ", e)
 
+def google_send_email(message="123", to="marsidorowicz@gmail.com"):
+    import TestAI
 
+    print("Connecting to google sheet zapas")
+    cred1 = ServiceAccountCredentials.from_json_keyfile_name(
+        'E:\\Programowanie\\wayscript\\send-emails-282415-a9f0e1e1227d.json')
+
+    gs1 = gspread.authorize(cred1)
+    print("Authentication successful, downloading content from sheet2")
+    zapas = gs1.open('Zapas1').sheet1
+    wydarzenia = gs1.open('Wydarzenia').sheet1
+
+    today = datetime.datetime.today()
+    months = ['STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC', 'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ',
+              'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ']
+    date2 = datetime.date(today.year, today.month, today.day)
+
+    # this module check if there are events meeting requirements and if yes it sends email with it
+    try:
+        row_send_lidia = []
+        row_send_mariusz = []
+        row_new = ""
+        rows_wydarzenia = wydarzenia.get()
+        if today.day is not calendar.monthrange(today.year, today.month)[1]:  # funtion works only if day in not
+            # last day of the month
+            for row in rows_wydarzenia:
+                if str(today.day + 1) in row[7]:  # requirement of departure tomorrow
+                    if months[today.month - 1] in row:
+                        if 'WYJAZD DNIA' in row:
+                            print(row)
+                            row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                            row_send_lidia.append(row_new)
+                            row_send_mariusz.append(row_new)
+
+                if str(today.day + 1) in row[7]:  # requirement of arrival tomorrow
+                    if months[today.month - 1] in row:
+                        if 'PRZYJAZD DNIA' in row:
+                            print(row)
+                            row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                            row_send_mariusz.append(row_new)
+            love = "Kocham Cię"
+            row_send_lidia.append(love)
+            if row_send_mariusz:
+                TestAI.sendmailgoogle(row_send_mariusz, "apartamentymsc@gmail.com")
+                print("Wysłano mail do Mariusza")
+            if row_send_lidia:
+                TestAI.sendmailgoogle(row_send_lidia, "lidiasidorowicz@gmail.com")
+                (print("Wysłano mail do Lidii"))
+        # function if not December and last day of the month #todo
+
+        # function if December and the last day of the month #todo
+    except Exception as e:
+        print("Błąd ", e)
 
 
 sort_events()
-import schedule
-import time
 
 schedule.every().day.at("08:00").do(sort_events)
+schedule.every().day.at("21:00").do(google_send_email)
 while True:
     schedule.run_pending()
     time.sleep(600)
