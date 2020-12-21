@@ -498,12 +498,13 @@ class GUI(Frame):
                                 print(row)
                                 row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
                                 row_send_mariusz.append(row_new)
-                love = "Kocham Cię"
-                row_send_lidia.append(love)
+
                 if row_send_mariusz:
                     TestAI.sendmailgoogle(row_send_mariusz, "apartamentymsc@gmail.com")
                     print("Wysłano mail do Mariusza")
                 if row_send_lidia:
+                    love = "Kocham Cię"
+                    row_send_lidia.append(love)
                     TestAI.sendmailgoogle(row_send_lidia, "lidiasidorowicz@gmail.com")
                     (print("Wysłano mail do Lidii"))
             # function if not December and last day of the month #todo
@@ -696,26 +697,27 @@ class GUI(Frame):
                     except Exception as e:
                         print("There was problem with new content data, some data required is missing...")
         # check if there is end of month and download reservations from next month if so
-        if today.day > 20:
-            print("Niedługo nowy miesiąc, pobieram nowe dane z miesiąca {}...".format(months[today.month]))
-            for row in rows:
-                if months[today.month] in row:
-                    if str(today.year) in row:
-                        try:
-                            row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21]]
-                            if 'SMREKOWA' not in row:  # LATER SPECIAL CONDITIONS APLIED TO SMREKOWA ONLY
-                                if row_reduced not in rows_zapas:
-                                    zapas.insert_row(row_reduced)
-                                    print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
-                                    print(row)
-                            if 'SMREKOWA' in row:  # FOR SMREKOWA ADD TOTAL PRICE TO EMAIL
-                                row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21], row[0]]
-                                if row_reduced not in rows_zapas:
-                                    zapas.insert_row(row_reduced)
-                                    print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
-                                    print(row)
-                        except Exception as e:
-                            print("There was problem with new content data, some data required is missing...")
+        if today.month != 12:
+            if today.day > 20:
+                print("Niedługo nowy miesiąc, pobieram nowe dane z miesiąca {}...".format(months[today.month]))
+                for row in rows:
+                    if months[today.month] in row:
+                        if str(today.year) in row:
+                            try:
+                                row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21]]
+                                if 'SMREKOWA' not in row:  # LATER SPECIAL CONDITIONS APLIED TO SMREKOWA ONLY
+                                    if row_reduced not in rows_zapas:
+                                        zapas.insert_row(row_reduced)
+                                        print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
+                                        print(row)
+                                if 'SMREKOWA' in row:  # FOR SMREKOWA ADD TOTAL PRICE TO EMAIL
+                                    row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21], row[0]]
+                                    if row_reduced not in rows_zapas:
+                                        zapas.insert_row(row_reduced)
+                                        print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
+                                        print(row)
+                            except Exception as e:
+                                print("There was problem with new content data, some data required is missing...")
         # check if year is ending, if so download new year reservations from January
         if today.month == 12:
             print("Niedługo nowy rok, pobieram nowe rezerwacje z roku {}".format(today.year + 1))
@@ -731,7 +733,7 @@ class GUI(Frame):
                         except Exception as e:
                             print("There was problem with new content data, some data required is missing...")
         print("Content seems up to date...")
-        root.after(7200000, GUI.refresh_google_sheet)  # run itself again after 2hours
+        root.after(17200000, GUI.refresh_google_sheet)  # run itself again after 2hours
         return rows
 
     def clock(self, text=None):

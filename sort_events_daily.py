@@ -262,8 +262,6 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                         row_send_ela.append(row_new)
                                     row_send_mariusz.append(row_new)
 
-            love = "Kocham Cię"
-            row_send_lidia.append(love)
             if row_send_mariusz:
                 TestAI.sendmailgoogle(row_send_mariusz, "apartamentymsc@gmail.com")
                 print("Wysłano mail do Mariusza")
@@ -271,6 +269,8 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                 TestAI.sendmailgoogle(row_send_ela, "elkaiwan@wp.pl")
                 print("Wysłano mail do Eli")
             if row_send_lidia:
+                love = "Kocham Cię"
+                row_send_lidia.append(love)
                 TestAI.sendmailgoogle(row_send_lidia, "lidiasidorowicz@gmail.com")
                 (print("Wysłano mail do Lidii"))
 
