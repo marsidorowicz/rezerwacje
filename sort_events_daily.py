@@ -48,11 +48,12 @@ def sort_events():
                         if months[today.month - 1] in row:
                             if str(today.year) in row:  # make list of all events for this month in this year
                                 if str(today.day + d) in row[3]:
-                                    eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                               row[4], row[5])
-                                    print("PRZYJAZD")
-                                    print(row)
-                                    events.append(eventsa)
+                                    if row[3] < row[4]:
+                                        eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                                   row[4], row[5])
+                                        print("PRZYJAZD")
+                                        print(row)
+                                        events.append(eventsa)
                                 if str(today.day + d) in row[4]:
                                     eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
                                                row[4], row[5])
@@ -69,11 +70,12 @@ def sort_events():
                         if months[today.month] in row:
                             if str(today.year) in row:  # make list of all events for this month in this year
                                 if str(d) in row[3]:
-                                    eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                               row[4], row[5])
-                                    print("PRZYJAZD")
-                                    print(row)
-                                    events.append(eventsa)
+                                    if row[3] < row[4]:
+                                        eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                                   row[4], row[5])
+                                        print("PRZYJAZD")
+                                        print(row)
+                                        events.append(eventsa)
                                 if str(d) in row[4]:
                                     eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
                                                row[4], row[5])
@@ -88,11 +90,12 @@ def sort_events():
                         if months[today.month - 1] in row:
                             if str(today.year) in row:  # make list of all events for this month in this year
                                 if str(today.day + d) in row[3]:
-                                    eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                               row[4], row[5])
-                                    print("PRZYJAZD")
-                                    print(row)
-                                    events.append(eventsa)
+                                    if row[3] < row[4]:
+                                        eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                                   row[4], row[5])
+                                        print("PRZYJAZD")
+                                        print(row)
+                                        events.append(eventsa)
                                 if str(today.day + d) in row[4]:
                                     eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
                                                row[4], row[5])
@@ -108,12 +111,13 @@ def sort_events():
                         if months[0] in row:  # search for January events
                             if str(today.year + 1) in row:  # make list of all events from next year first month
                                 if str(d) in row[3]:
-                                    eventsa = (
-                                        "PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                        row[4], row[5])
-                                    print("PRZYJAZD")
-                                    print(row)
-                                    events.append(eventsa)
+                                    if row[3] < row[4]:
+                                        eventsa = (
+                                            "PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                            row[4], row[5])
+                                        print("PRZYJAZD")
+                                        print(row)
+                                        events.append(eventsa)
                                 if str(d) in row[4]:
                                     eventsb = (
                                         "WYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
