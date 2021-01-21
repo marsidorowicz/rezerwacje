@@ -180,7 +180,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                             if 'WYJAZD DNIA' in row:
                                 print(row)
                                 row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
-                                if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
+                                if 'HM2' in row_new or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
                                         or 'HSII' in row:
                                     row_send_ela.append(row_new)
                                 row_send_lidia.append(row_new)
@@ -191,7 +191,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                             if 'PRZYJAZD DNIA' in row:
                                 print(row)
                                 row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
-                                if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
+                                if 'HM2' in row_new or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
                                         or 'HSII' in row:
                                     row_send_ela.append(row_new)
                                 row_send_mariusz.append(row_new)
@@ -202,11 +202,13 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                             if 'WYJAZD DNIA' in row:
                                 print(row)
                                 row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                print("Nowy", row_new)
                                 if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
                                         or 'HSII' in row:
                                     row_send_ela.append(row_new)
                                 row_send_lidia.append(row_new)
                                 row_send_mariusz.append(row_new)
+                                print("Test", row_send_mariusz)
 
                     if '1' == str(row[6]):  # requirement of arrival tomorrow
                         if months[today.month] in row:
@@ -266,17 +268,17 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                         row_send_ela.append(row_new)
                                     row_send_mariusz.append(row_new)
 
-            if row_send_mariusz:
-                TestAI.sendmailgoogle(row_send_mariusz, "apartamentymsc@gmail.com")
-                print("Wysłano mail do Mariusza")
-            if row_send_ela:
-                TestAI.sendmailgoogle(row_send_ela, "elkaiwan@wp.pl")
-                print("Wysłano mail do Eli")
-            if row_send_lidia:
-                love = "Kocham Cię"
-                row_send_lidia.append(love)
-                TestAI.sendmailgoogle(row_send_lidia, "lidiasidorowicz@gmail.com")
-                (print("Wysłano mail do Lidii"))
+        if row_send_mariusz:
+            TestAI.sendmailgoogle(row_send_mariusz, "apartamentymsc@gmail.com")
+            print("Wysłano mail do Mariusza")
+        if row_send_ela:
+            TestAI.sendmailgoogle(row_send_ela, "elkaiwan@wp.pl")
+            print("Wysłano mail do Eli")
+        if row_send_lidia:
+            love = "Kocham Cię"
+            row_send_lidia.append(love)
+            TestAI.sendmailgoogle(row_send_lidia, "lidiasidorowicz@gmail.com")
+            (print("Wysłano mail do Lidii"))
 
     except Exception as e:
         print("Błąd ", e)
@@ -286,6 +288,9 @@ print("Uruchamiam procesy załadowania wydarzeń o 8:00/18:40 oraz wysłania mai
 schedule.every().day.at("08:00").do(sort_events)
 schedule.every().day.at("18:40").do(sort_events)
 schedule.every().day.at("19:00").do(google_send_email)
+print("Test sending")
+google_send_email()
+
 while True:
     schedule.run_pending()
     time.sleep(600)

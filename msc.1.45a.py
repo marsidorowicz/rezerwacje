@@ -698,7 +698,7 @@ class GUI(Frame):
                         print("There was problem with new content data, some data required is missing...")
         # check if there is end of month and download reservations from next month if so
         if today.month != 12:
-            if today.day > 20:
+            if today.day > 15:
                 print("Niedługo nowy miesiąc, pobieram nowe dane z miesiąca {}...".format(months[today.month]))
                 for row in rows:
                     if months[today.month] in row:
