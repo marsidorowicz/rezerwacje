@@ -7,7 +7,6 @@ import time
 
 
 def sort_events():
-
     def check_if_last_day_of_month(date1):
         import datetime
         import calendar
@@ -49,8 +48,9 @@ def sort_events():
                             if str(today.year) in row:  # make list of all events for this month in this year
                                 if str(today.day + d) in row[3]:
                                     if row[3] < row[4]:
-                                        eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                                   row[4], row[5])
+                                        eventsa = (
+                                            "PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                            row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
@@ -71,8 +71,9 @@ def sort_events():
                             if str(today.year) in row:  # make list of all events for this month in this year
                                 if str(d) in row[3]:
                                     if row[3] < row[4]:
-                                        eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                                   row[4], row[5])
+                                        eventsa = (
+                                            "PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                            row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
@@ -91,8 +92,9 @@ def sort_events():
                             if str(today.year) in row:  # make list of all events for this month in this year
                                 if str(today.day + d) in row[3]:
                                     if row[3] < row[4]:
-                                        eventsa = ("PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                                   row[4], row[5])
+                                        eventsa = (
+                                            "PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                            row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
@@ -139,7 +141,6 @@ def sort_events():
 
 
 def google_send_email(message="123", to="marsidorowicz@gmail.com"):
-
     """
     # this module check if there are events meeting requirements and if yes it sends email with it
     :param message: message to be sent, allowed multiple elements in str as a list, then it splits them, and
@@ -171,83 +172,78 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
     row_new = ""
     try:
         rows_wydarzenia = wydarzenia.get()
-        if today.month != 12:   # requirement that the actual month is not December
+        if today.month != 12:  # requirement that the actual month is not December
             if today.day is not calendar.monthrange(today.year, today.month)[1]:  # funtion works only if day in not
                 # last day of the month
                 for row in rows_wydarzenia:
-                    if str(today.day + 1) == str(row[7]):  # requirement of departure tomorrow
-                        if months[today.month - 1] in row:
-                            if 'WYJAZD DNIA' in row:
-                                print(row)
-                                row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
-                                if 'HM2' in row_new or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
-                                        or 'HSII' in row:
-                                    row_send_ela.append(row_new)
-                                row_send_lidia.append(row_new)
-                                row_send_mariusz.append(row_new)
+                    if row[6] < row[7]:
+                        if str(today.day + 1) == str(row[7]):  # requirement of departure tomorrow
+                            if months[today.month - 1] in row:
+                                if 'WYJAZD DNIA' in row:
+                                    print(row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                    if 'HM2' in row_new or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
+                                            or 'HSII' in row:
+                                        row_send_ela.append(row_new)
+                                    row_send_lidia.append(row_new)
+                                    row_send_mariusz.append(row_new)
 
-                    if str(today.day + 1) == str(row[6]):  # requirement of arrival tomorrow
-                        if months[today.month - 1] in row:
-                            if 'PRZYJAZD DNIA' in row:
-                                print(row)
-                                row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
-                                if 'HM2' in row_new or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
-                                        or 'HSII' in row:
-                                    row_send_ela.append(row_new)
-                                row_send_mariusz.append(row_new)
-            else:   # also the same but if today is the last day of the month
-                for row in rows_wydarzenia:
-                    if '1' == str(row[7]):  # requirement of departure tomorrow
-                        if months[today.month] in row:
-                            if 'WYJAZD DNIA' in row:
-                                print(row)
-                                row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
-                                print("Nowy", row_new)
-                                if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
-                                        or 'HSII' in row:
-                                    row_send_ela.append(row_new)
-                                row_send_lidia.append(row_new)
-                                row_send_mariusz.append(row_new)
-                                print("Test", row_send_mariusz)
+                        if str(today.day + 1) == str(row[6]):  # requirement of arrival tomorrow
+                            if months[today.month - 1] in row:
+                                if 'PRZYJAZD DNIA' in row:
+                                    print(row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                    if 'HM2' in row_new or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
+                                            or 'HSII' in row:
+                                        row_send_ela.append(row_new)
+                                    row_send_mariusz.append(row_new)
 
-                    if '1' == str(row[6]):  # requirement of arrival tomorrow
-                        if months[today.month] in row:
-                            if 'PRZYJAZD DNIA' in row:
-                                print(row)
-                                row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
-                                if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
-                                        or 'HSII' in row:
-                                    row_send_ela.append(row_new)
-                                row_send_mariusz.append(row_new)
-        else:   # if the actual month is December
-            if today.day is not calendar.monthrange(today.year, today.month)[1]:  # funtion works only if day in not
-                # last day of the month
-                for row in rows_wydarzenia:
-                    if str(today.day + 1) == str(row[7]):  # requirement of departure tomorrow
-                        if months[today.month - 1] in row:
-                            if 'WYJAZD DNIA' in row:
-                                print(row)
-                                row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
-                                if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
-                                        or 'HSII' in row:
-                                    row_send_ela.append(row_new)
-                                row_send_lidia.append(row_new)
-                                row_send_mariusz.append(row_new)
-
-                    if str(today.day + 1) == str(row[6]):  # requirement of arrival tomorrow
-                        if months[today.month - 1] in row:
-                            if 'PRZYJAZD DNIA' in row:
-                                print(row)
-                                row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
-                                if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row\
-                                        or 'HSII' in row:
-                                    row_send_ela.append(row_new)
-                                row_send_mariusz.append(row_new)
+                        if str(today.day) == str(row[7]):  # requirement of todays departure to release preauthorization
+                            if months[today.month - 1] in row:
+                                if 'WYJAZD DNIA' in row:
+                                    print("Odblokuj kaucję: ", row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
+                                        "Odblokuj kaucję "
+                                    row_send_mariusz.append(row_new)
             else:  # also the same but if today is the last day of the month
                 for row in rows_wydarzenia:
-                    if '1' == str(row[7]):  # requirement of departure tomorrow
-                        if months[0] in row:    # search for events in January
-                            if str(today.year+1) in row:    # of the next year
+                    if row[6] < row[7]:
+                        if '1' == str(row[7]):  # requirement of departure tomorrow
+                            if months[today.month] in row:
+                                if 'WYJAZD DNIA' in row:
+                                    print(row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                    print("Nowy", row_new)
+                                    if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
+                                            or 'HSII' in row:
+                                        row_send_ela.append(row_new)
+                                    row_send_lidia.append(row_new)
+                                    row_send_mariusz.append(row_new)
+                                    print("Test", row_send_mariusz)
+
+                        if '1' == str(row[6]):  # requirement of arrival tomorrow
+                            if months[today.month] in row:
+                                if 'PRZYJAZD DNIA' in row:
+                                    print(row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                    if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
+                                            or 'HSII' in row:
+                                        row_send_ela.append(row_new)
+                                    row_send_mariusz.append(row_new)
+                        if str(today.day) == str(row[7]):  # requirement of todays departure to release preauthorization
+                            if months[today.month] in row:
+                                if 'WYJAZD DNIA' in row:
+                                    print("Odblokuj kaucję: ", row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
+                                        "Odblokuj kaucję "
+                                    row_send_mariusz.append(row_new)
+        else:  # if the actual month is December
+            if today.day is not calendar.monthrange(today.year, today.month)[1]:  # funtion works only if day in not
+                # last day of the month
+                for row in rows_wydarzenia:
+                    if row[6] < row[7]:
+                        if str(today.day + 1) == str(row[7]):  # requirement of departure tomorrow
+                            if months[today.month - 1] in row:
                                 if 'WYJAZD DNIA' in row:
                                     print(row)
                                     row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
@@ -257,15 +253,53 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                     row_send_lidia.append(row_new)
                                     row_send_mariusz.append(row_new)
 
-                    if '1' == str(row[6]):  # requirement of arrival tomorrow
-                        if months[0] in row:    # search for events in January
-                            if str(today.year + 1) in row:  # of the next year
+                        if str(today.day + 1) == str(row[6]):  # requirement of arrival tomorrow
+                            if months[today.month - 1] in row:
                                 if 'PRZYJAZD DNIA' in row:
                                     print(row)
                                     row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
                                     if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
                                             or 'HSII' in row:
                                         row_send_ela.append(row_new)
+                                    row_send_mariusz.append(row_new)
+                        if str(today.day) == str(row[7]):  # requirement of todays departure to release preauthorization
+                            if months[today.month - 1] in row:
+                                if 'WYJAZD DNIA' in row:
+                                    print("Odblokuj kaucję: ", row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
+                                        "Odblokuj kaucję "
+                                    row_send_mariusz.append(row_new)
+            else:  # also the same but if today is the last day of the month
+                for row in rows_wydarzenia:
+                    if row[6] < row[7]:
+                        if '1' == str(row[7]):  # requirement of departure tomorrow
+                            if months[0] in row:  # search for events in January
+                                if str(today.year + 1) in row:  # of the next year
+                                    if 'WYJAZD DNIA' in row:
+                                        print(row)
+                                        row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                        if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
+                                                or 'HSII' in row:
+                                            row_send_ela.append(row_new)
+                                        row_send_lidia.append(row_new)
+                                        row_send_mariusz.append(row_new)
+
+                        if '1' == str(row[6]):  # requirement of arrival tomorrow
+                            if months[0] in row:  # search for events in January
+                                if str(today.year + 1) in row:  # of the next year
+                                    if 'PRZYJAZD DNIA' in row:
+                                        print(row)
+                                        row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                        if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
+                                                or 'HSII' in row:
+                                            row_send_ela.append(row_new)
+                                        row_send_mariusz.append(row_new)
+                        if str(today.day) == str(row[7]):  # requirement of todays departure to release preauthorization
+                            if months[today.month - 1] in row:
+                                if 'WYJAZD DNIA' in row:
+                                    print("Odblokuj kaucję: ", row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
+                                        "Odblokuj kaucję "
                                     row_send_mariusz.append(row_new)
 
         if row_send_mariusz:
@@ -288,8 +322,6 @@ print("Uruchamiam procesy załadowania wydarzeń o 8:00/18:40 oraz wysłania mai
 schedule.every().day.at("08:00").do(sort_events)
 schedule.every().day.at("18:40").do(sort_events)
 schedule.every().day.at("19:00").do(google_send_email)
-print("Test sending")
-google_send_email()
 
 while True:
     schedule.run_pending()
