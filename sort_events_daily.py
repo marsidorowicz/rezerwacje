@@ -47,12 +47,6 @@ def sort_events():
                         if months[today.month - 1] in row:
                             print(row)
                             if str(today.year) in row:  # make list of all events for this month in this year
-                                if str(today.day + d) in row[4]:
-                                    eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                               row[4], row[5])
-                                    print("WYJAZD")
-                                    print(row)
-                                    events.append(eventsb)
                                 if str(today.day + d) in row[3]:
                                     if row[3] < row[4]:
                                         eventsa = (
@@ -61,6 +55,12 @@ def sort_events():
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
+                                if str(today.day + d) in row[4]:
+                                    eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                               row[4], row[5])
+                                    print("WYJAZD")
+                                    print(row)
+                                    events.append(eventsb)
 
                 d += 1
             # check next month to see if there are new events
@@ -70,12 +70,6 @@ def sort_events():
                     if str(d) in row:
                         if months[today.month] in row:
                             if str(today.year) in row:  # make list of all events for this month in this year
-                                if str(d) in row[4]:
-                                    eventsb = ("WYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
-                                               row[4], row[5])
-                                    print("WYJAZD")
-                                    print(row)
-                                    events.append(eventsb)
                                 if str(d) in row[3]:
                                     print(row)
                                     if row[3] < row[4]:
@@ -85,6 +79,13 @@ def sort_events():
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
+                                if str(d) in row[4]:
+                                    eventsb = ("WYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
+                                               row[4], row[5])
+                                    print("WYJAZD")
+                                    print(row)
+                                    events.append(eventsb)
+
                 d += 1
         else:  # if December and not last day of the month
             while today.day + d <= calendar.monthrange(date.year, date.month)[1]:
@@ -92,12 +93,6 @@ def sort_events():
                     if str(today.day + d) in row:
                         if months[today.month - 1] in row:
                             if str(today.year) in row:  # make list of all events for this month in this year
-                                if str(today.day + d) in row[4]:
-                                    eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
-                                               row[4], row[5])
-                                    print("WYJAZD")
-                                    print(row)
-                                    events.append(eventsb)
                                 if str(today.day + d) in row[3]:
                                     if row[3] < row[4]:
                                         eventsa = (
@@ -106,6 +101,13 @@ def sort_events():
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
+                                if str(today.day + d) in row[4]:
+                                    eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                               row[4], row[5])
+                                    print("WYJAZD")
+                                    print(row)
+                                    events.append(eventsb)
+
                 d += 1
             # check next month to see if there are new events including new year first month
             d = 1
@@ -114,12 +116,6 @@ def sort_events():
                     if str(d) in row:
                         if months[today.month] in row:
                             if str(today.year) in row:  # make list of all events for this month in this year
-                                if str(d) in row[4]:
-                                    eventsb = ("WYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
-                                               row[4], row[5])
-                                    print("WYJAZD")
-                                    print(row)
-                                    events.append(eventsb)
                                 if str(d) in row[3]:
                                     print(row)
                                     if row[3] < row[4]:
@@ -129,6 +125,13 @@ def sort_events():
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
+                                if str(d) in row[4]:
+                                    eventsb = ("WYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
+                                               row[4], row[5])
+                                    print("WYJAZD")
+                                    print(row)
+                                    events.append(eventsb)
+
                 d += 1
         events.reverse()  # To have it uploaded in reversed order in google sheet
 
@@ -401,7 +404,7 @@ print("Uruchamiam procesy załadowania wydarzeń o 07:40 / 19:40 oraz wysłania 
 schedule.every().day.at("07:40").do(sort_events)
 schedule.every().day.at("19:40").do(sort_events)
 schedule.every().day.at("20:00").do(google_send_email)
-# sort_events()
+sort_events()
 # google_send_email()
 while True:
     schedule.run_pending()
