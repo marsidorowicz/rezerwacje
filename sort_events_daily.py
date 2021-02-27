@@ -61,11 +61,22 @@ def sort_events():
                                     print("WYJAZD")
                                     print(row)
                                     events.append(eventsb)
+                        if months[today.month] in row:  # make list of all events for next month with arrival in
+                            #  previous
+                            if str(today.year) in row:
+                                if str(today.day + d) in row[3]:
+                                    if row[3] > row[4]:
+                                        eventsc = (
+                                            "PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
+                                            row[4], row[5])
+                                        print("PRZYJAZD z wyjazdem następnego miesąca")
+                                        print(row)
+                                        events.append(eventsc)
 
                 d += 1
             # check next month to see if there are new events
             d = 1
-            while d <= calendar.monthrange(date.year, date.month+1)[1]:
+            while d <= calendar.monthrange(date.year, date.month + 1)[1]:
                 for row in rows_zapas:
                     if str(d) in row:
                         if months[today.month] in row:
@@ -109,15 +120,21 @@ def sort_events():
                                     events.append(eventsb)
 
                 d += 1
-            # check next month to see if there are new events including new year first month
+            # check next month to see if there are new events including new year first month #todo
             d = 1
-            while d <= calendar.monthrange(date.year, date.month+1)[1]:
+            while d <= calendar.monthrange(date.year, date.month + 1)[1]:
                 for row in rows_zapas:
                     if str(d) in row:
                         if months[today.month] in row:
-                            if str(today.year) in row:  # make list of all events for this month in this year
+                            if str(today.year) in row:  # make list of all events for next month in this year
                                 if str(d) in row[3]:
-                                    print(row)
+                                    print("W następnym miesiącu: ", row)
+                                    if str(d) in row[4]:
+                                        eventsb = ("WYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
+                                                   row[4], row[5])
+                                        print("WYJAZD")
+                                        print(row)
+                                        events.append(eventsb)
                                     if row[3] < row[4]:
                                         eventsa = (
                                             "PRZYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
@@ -125,12 +142,8 @@ def sort_events():
                                         print("PRZYJAZD")
                                         print(row)
                                         events.append(eventsa)
-                                if str(d) in row[4]:
-                                    eventsb = ("WYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
-                                               row[4], row[5])
-                                    print("WYJAZD")
-                                    print(row)
-                                    events.append(eventsb)
+
+                # check next month for arrival in previous month
 
                 d += 1
         events.reverse()  # To have it uploaded in reversed order in google sheet
@@ -191,6 +204,9 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
         if today.month != 12:  # requirement that the actual month is not December
             if today.day is not calendar.monthrange(today.year, today.month)[1]:  # funtion works only if day in not
                 # last day of the month
+                print("*" * 80)
+                print("NOT December and NOT last day of the month")
+                print("*" * 80)
                 for row in rows_wydarzenia:
                     if row[6] < row[7]:
                         if str(today.day + 1) == str(row[7]):  # requirement of departure tomorrow
@@ -233,9 +249,30 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                 if 'WYJAZD DNIA' in row:
                                     print("Odblokuj kaucję: ", row)
                                     row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
-                                        "Odblokuj kaucję "
+                                              "Odblokuj kaucję "
                                     row_send_mariusz.append(row_new)
-            else:  # also the same but if today is the last day of the month
+                    #  now check for arrivals this month with departure next month
+                    if months[today.month] in row:
+                        if row[6] > row[7]:
+                            if 'PRZYJAZD DNIA' in row:
+                                print(row)
+                                row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[
+                                    5] + " "
+                                if 'HM2' in row_new or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
+                                        or 'HSII' in row:
+                                    row_send_ela.append(row_new)
+                                row_send_lidia.append(row_new)
+                                row_send_mariusz.append(row_new)
+                                if 'SMREKOWA' in row:
+                                    row_send_marzenka.append(row_new)
+                                if 'CICHA' in row or 'CLASSIC' in row or 'KASPROWICZA' in row \
+                                        or 'GÓRSKI' in row or 'SŁONECZNY' in row or 'KĄCIK' in row or 'GIEWONT' in \
+                                        row:
+                                    row_send_maria.append(row_new)
+                                if 'POMORSKA' in row:
+                                    row_send_gabi.append(row_new)
+            else:  # also the same but if today is the last day of the month  #todo add the same arrivals with
+                # todo departure next month for this condition
                 for row in rows_wydarzenia:
                     if row[6] < row[7]:
                         if '1' == str(row[7]):  # requirement of departure tomorrow
@@ -280,7 +317,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                 if 'WYJAZD DNIA' in row:
                                     print("Odblokuj kaucję: ", row)
                                     row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
-                                        "Odblokuj kaucję "
+                                              "Odblokuj kaucję "
                                     row_send_mariusz.append(row_new)
         else:  # if the actual month is December
             if today.day is not calendar.monthrange(today.year, today.month)[1]:  # funtion works only if day in not
@@ -326,7 +363,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                 if 'WYJAZD DNIA' in row:
                                     print("Odblokuj kaucję: ", row)
                                     row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
-                                        "Odblokuj kaucję "
+                                              "Odblokuj kaucję "
                                     row_send_mariusz.append(row_new)
             else:  # also the same but if today is the last day of the month
                 for row in rows_wydarzenia:
@@ -336,7 +373,8 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                 if str(today.year + 1) in row:  # of the next year
                                     if 'WYJAZD DNIA' in row:
                                         print(row)
-                                        row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                        row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[
+                                            5] + " "
                                         if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
                                                 or 'HSII' in row:
                                             row_send_ela.append(row_new)
@@ -345,7 +383,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                         if 'SMREKOWA' in row:
                                             row_send_marzenka.append(row_new)
                                         if 'CICHA' in row or 'CLASSIC' in row or 'KASPROWICZA' in row \
-                                            or 'GÓRSKI' in row or 'SŁONECZNY' in row or 'KĄCIK' in row or 'GIEWONT' in \
+                                                or 'GÓRSKI' in row or 'SŁONECZNY' in row or 'KĄCIK' in row or 'GIEWONT' in \
                                                 row:
                                             row_send_maria.append(row_new)
                                         if 'POMORSKA' in row:
@@ -356,7 +394,8 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                 if str(today.year + 1) in row:  # of the next year
                                     if 'PRZYJAZD DNIA' in row:
                                         print(row)
-                                        row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                        row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[
+                                            5] + " "
                                         if 'HM2' in row or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' \
                                                 in row or 'HSII' in row:
                                             row_send_ela.append(row_new)
@@ -364,7 +403,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                         if 'SMREKOWA' in row:
                                             row_send_marzenka.append(row_new)
                                         if 'CICHA' in row or 'CLASSIC' in row or 'KASPROWICZA' in row \
-                                            or 'GÓRSKI' in row or 'SŁONECZNY' in row or 'KĄCIK' in row or 'GIEWONT' in \
+                                                or 'GÓRSKI' in row or 'SŁONECZNY' in row or 'KĄCIK' in row or 'GIEWONT' in \
                                                 row:
                                             row_send_maria.append(row_new)
                         if str(today.day) == str(row[7]):  # requirement of todays departure to release preauthorization
@@ -372,7 +411,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                 if 'WYJAZD DNIA' in row:
                                     print("Odblokuj kaucję: ", row)
                                     row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
-                                        "Odblokuj kaucję "
+                                              "Odblokuj kaucję "
                                     row_send_mariusz.append(row_new)
 
         if row_send_mariusz:
@@ -394,7 +433,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
             (print("Wysłano mail do Marii"))
         if row_send_gabi:
             TestAI.sendmailgoogle(row_send_gabi, "gabi2901g@gmail.com")
-            (print("Wysłano mail do Marii"))
+            (print("Wysłano mail do Gabi"))
 
     except Exception as e:
         print("Błąd ", e)
@@ -405,7 +444,7 @@ schedule.every().day.at("07:40").do(sort_events)
 schedule.every().day.at("19:40").do(sort_events)
 schedule.every().day.at("20:00").do(google_send_email)
 sort_events()
-# google_send_email()
+google_send_email()
 while True:
     schedule.run_pending()
     time.sleep(600)
