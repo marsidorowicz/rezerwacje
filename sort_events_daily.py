@@ -271,10 +271,11 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                     row_send_maria.append(row_new)
                                 if 'POMORSKA' in row:
                                     row_send_gabi.append(row_new)
+
             else:  # also the same but if today is the last day of the month  #todo add the same arrivals with
                 # todo departure next month for this condition
                 for row in rows_wydarzenia:
-                    if row[6] < row[7]:
+                    if row[6] > row[7]:
                         if '1' == str(row[7]):  # requirement of departure tomorrow
                             if months[today.month] in row:
                                 if 'WYJAZD DNIA' in row:
@@ -313,7 +314,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                         row_send_maria.append(row_new)
 
                         if str(today.day) == str(row[7]):  # requirement of todays departure to release preauthorization
-                            if months[today.month] in row:
+                            if months[today.month - 1] in row:
                                 if 'WYJAZD DNIA' in row:
                                     print("Odblokuj kaucję: ", row)
                                     row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
