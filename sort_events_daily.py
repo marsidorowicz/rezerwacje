@@ -456,8 +456,8 @@ print("Uruchamiam procesy załadowania wydarzeń o 07:40 / 19:40 oraz wysłania 
 schedule.every().day.at("07:40").do(sort_events)
 schedule.every().day.at("19:40").do(sort_events)
 schedule.every().day.at("20:00").do(google_send_email)
-# sort_events()
-# google_send_email()
+sort_events()
+google_send_email()
 while True:
     schedule.run_pending()
     time.sleep(600)
