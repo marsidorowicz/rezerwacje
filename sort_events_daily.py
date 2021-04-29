@@ -94,13 +94,13 @@ def sort_events():
                                             row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
-                                        # events.append(eventsa)
+                                        events.append(eventsa)
                                 if str(d) in row[4]:
                                     eventsb = ("WYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
                                                row[4], row[5])
                                     print("WYJAZD")
                                     print(row)
-                                    # events.append(eventsb)
+                                    events.append(eventsb)
 
                 d += 1
         else:  # if December and not last day of the month
