@@ -41,10 +41,11 @@ def sort_events():
         # 1) when it is not December and not last day of the month
         # start counting from today up to and including the last day of the month
         if today.month != 12:
-            print("*"*80)
+            print("*" * 80)
             print("Funkcja sprawdź wydarzenia (To nie Grudzień)")
             print("*" * 80)
-            while today.day + d <= calendar.monthrange(date.year, date.month)[1]:
+            while today.day + d <= calendar.monthrange(date.year, date.month)[1]:  # number of days in this month
+                print("WARUNEK 1", calendar.monthrange(date.year, date.month)[1])
                 for row in rows_zapas:
                     if str(today.day + d) in row:
                         if months[today.month - 1] in row:
@@ -68,7 +69,7 @@ def sort_events():
                             #  previous
                             if str(today.year) in row:
                                 if str(today.day + d) in row[3]:
-                                    if row[3] > row[4]:
+                                    if int(row[3]) > int(row[4]):
                                         eventsc = (
                                             "PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
                                             row[4], row[5])
@@ -79,26 +80,27 @@ def sort_events():
                 d += 1
             # check next month to see if there are new events
             d = 1
-            while d <= calendar.monthrange(date.year, date.month + 1)[1]:
+            while d <= calendar.monthrange(date.year, date.month + 1)[1]:  # number of days in next month
+                print("WARUNEK 2", calendar.monthrange(date.year, date.month + 1)[1])
                 for row in rows_zapas:
                     if str(d) in row:
                         if months[today.month] in row:
-                            if str(today.year) in row:  # make list of all events for this month in this year
+                            if str(today.year) in row:  # make list of all events for next month in this year
                                 if str(d) in row[3]:
                                     print(row)
-                                    if row[3] < row[4]:
+                                    if int(row[3]) < int(row[4]):
                                         eventsa = (
                                             "PRZYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
                                             row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
-                                        events.append(eventsa)
+                                        # events.append(eventsa)
                                 if str(d) in row[4]:
                                     eventsb = ("WYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
                                                row[4], row[5])
                                     print("WYJAZD")
                                     print(row)
-                                    events.append(eventsb)
+                                    # events.append(eventsb)
 
                 d += 1
         else:  # if December and not last day of the month
@@ -457,7 +459,7 @@ schedule.every().day.at("07:40").do(sort_events)
 schedule.every().day.at("19:40").do(sort_events)
 schedule.every().day.at("20:00").do(google_send_email)
 sort_events()
-google_send_email()
+# google_send_email()
 while True:
     schedule.run_pending()
     time.sleep(600)
