@@ -113,7 +113,7 @@ def sort_events():
                         if months[today.month - 1] in row:
                             if str(today.year) in row:  # make list of all events for this month in this year
                                 if str(today.day + d) in row[3]:
-                                    if row[3] < row[4]:
+                                    if int(row[3]) < int(row[4]):
                                         eventsa = (
                                             "PRZYJAZD DNIA", today.day + d, row[0], row[5], row[1], row[2], row[3],
                                             row[4], row[5])
@@ -143,7 +143,7 @@ def sort_events():
                                         print("WYJAZD")
                                         print(row)
                                         events.append(eventsb)
-                                    if row[3] < row[4]:
+                                    if int(row[3]) < int(row[4]):
                                         eventsa = (
                                             "PRZYJAZD DNIA", d, row[0], row[5], row[1], row[2], row[3],
                                             row[4], row[5])
