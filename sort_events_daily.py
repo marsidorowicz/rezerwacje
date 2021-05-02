@@ -264,6 +264,26 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                     row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " " + \
                                               "Odblokuj kaucję "
                                     row_send_mariusz.append(row_new)
+
+                    if int(row[6]) > int(row[7]):   # same if arrival was last month but this month tomorrow they leave
+                        if int(today.day + 1) == int(row[7]):  # requirement of departure tomorrow
+                            if months[today.month - 1] in row:
+                                if 'WYJAZD DNIA' in row:
+                                    print(row)
+                                    row_new = row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[5] + " "
+                                    if 'HM2' in row_new or 'HONEYMOON' in row or 'MO' in row or 'CS' in row or 'HS' in row \
+                                            or 'HSII' in row:
+                                        row_send_ela.append(row_new)
+                                    row_send_lidia.append(row_new)
+                                    row_send_mariusz.append(row_new)
+                                    if 'SMREKOWA' in row:
+                                        row_send_marzenka.append(row_new)
+                                    if 'CICHA' in row or 'CLASSIC' in row or 'KASPROWICZA' in row \
+                                            or 'GÓRSKI' in row or 'SŁONECZNY' in row or 'KĄCIK' in row or 'GIEWONT' in \
+                                            row:
+                                        row_send_maria.append(row_new)
+                                    if 'POMORSKA' in row:
+                                        row_send_gabi.append(row_new)
                     #  now check for arrivals this month with departure next month
                     if months[today.month] in row:
                         if int(row[6]) > int(row[7]):
@@ -459,7 +479,7 @@ schedule.every().day.at("07:40").do(sort_events)
 schedule.every().day.at("19:40").do(sort_events)
 schedule.every().day.at("20:00").do(google_send_email)
 sort_events()
-# google_send_email()
+google_send_email()
 while True:
     schedule.run_pending()
     time.sleep(600)
