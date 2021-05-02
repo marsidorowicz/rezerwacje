@@ -284,6 +284,7 @@ def google_send_email(message="123", to="marsidorowicz@gmail.com"):
                                         row_send_maria.append(row_new)
                                     if 'POMORSKA' in row:
                                         row_send_gabi.append(row_new)
+
                     #  now check for arrivals this month with departure next month
                     if months[today.month] in row:
                         if int(row[6]) > int(row[7]):
