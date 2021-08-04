@@ -559,13 +559,15 @@ class GUI(Frame):
                                                    row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
-                                        events.append(eventsa)
+                                        if eventsa not in events:
+                                            events.append(eventsa)
                                     if str(today.day + d) in row[4]:
                                         eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[1], row[2], row[3],
                                                    row[4], row[5])
                                         print("WYJAZD")
                                         print(row)
-                                        events.append(eventsb)
+                                        if eventsb not in events:
+                                            events.append(eventsb)
 
                     d += 1
                 # check next month to see if there are new events
@@ -580,13 +582,15 @@ class GUI(Frame):
                                                    row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
-                                        events.append(eventsa)
+                                        if eventsa not in events:
+                                            events.append(eventsa)
                                     if str(d) in row[4]:
                                         eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[1], row[2], row[3],
                                                    row[4], row[5])
                                         print("WYJAZD")
                                         print(row)
-                                        events.append(eventsb)
+                                        if eventsb not in events:
+                                            events.append(eventsb)
                     d += 1
             else:
                 while today.day + d <= calendar.monthrange(date.year, date.month)[1]:
@@ -599,13 +603,15 @@ class GUI(Frame):
                                                    row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
-                                        events.append(eventsa)
+                                        if eventsa not in events:
+                                            events.append(eventsa)
                                     if str(today.day + d) in row[4]:
                                         eventsb = ("WYJAZD DNIA", today.day + d, row[0], row[1], row[2], row[3],
                                                    row[4], row[5])
                                         print("WYJAZD")
                                         print(row)
-                                        events.append(eventsb)
+                                        if eventsb not in events:
+                                            events.append(eventsb)
                     d += 1
                 # check next month to see if there are new events
                 d = 0
@@ -619,13 +625,15 @@ class GUI(Frame):
                                         "PRZYJAZD DNIA", today.day + d, row[0], row[1], row[2], row[3], row[4], row[5])
                                         print("PRZYJAZD")
                                         print(row)
-                                        events.append(eventsa)
+                                        if eventsa not in events:
+                                            events.append(eventsa)
                                     if str(d) in row[4]:
                                         eventsb = (
                                         "WYJAZD DNIA", today.day + d, row[0], row[1], row[2], row[3], row[4], row[5])
                                         print("WYJAZD")
                                         print(row)
-                                        events.append(eventsb)
+                                        if eventsb not in events:
+                                            events.append(eventsb)
                     d += 1
             events.reverse()
 
