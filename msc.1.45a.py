@@ -688,20 +688,12 @@ class GUI(Frame):
             if months[today.month - 1] in row:  # CHECK IF RESERVATION IS IN THIS MONTH
                 if str(today.year) in row:
                     try:
+                        row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21]]
+                        if row_reduced not in rows_zapas:
+                            zapas.insert_row(row_reduced)
+                            print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
+                            print(row)
 
-                        if 'SMREKOWA' not in row:  # LATER SPECIAL CONDITIONS APLIED TO SMREKOWA ONLY
-                            row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21]]
-                            if row_reduced not in rows_zapas:
-                                zapas.insert_row(row_reduced)
-                                print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
-                                print(row)
-
-                        if 'SMREKOWA' in row:  # FOR SMREKOWA ADD TOTAL PRICE TO EMAIL
-                            row_reduced_1 = [row[10], row[13], row[14], row[19], row[20], row[21], row[0]]
-                            if row_reduced_1 not in rows_zapas:
-                                zapas.insert_row(row_reduced_1)
-                                print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
-                                print(row)
                     except Exception as e:
                         print("There was problem with new content data, some data required is missing...")
         # check if there is end of month and download reservations from next month if so
@@ -713,17 +705,10 @@ class GUI(Frame):
                         if str(today.year) in row:
                             try:
                                 row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21]]
-                                if 'SMREKOWA' not in row:  # LATER SPECIAL CONDITIONS APLIED TO SMREKOWA ONLY
-                                    if row_reduced not in rows_zapas:
-                                        zapas.insert_row(row_reduced)
-                                        print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
-                                        print(row)
-                                if 'SMREKOWA' in row:  # FOR SMREKOWA ADD TOTAL PRICE TO EMAIL
-                                    row_reduced = [row[10], row[13], row[14], row[19], row[20], row[21], row[0]]
-                                    if row_reduced not in rows_zapas:
-                                        zapas.insert_row(row_reduced)
-                                        print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
-                                        print(row)
+                                if row_reduced not in rows_zapas:
+                                    zapas.insert_row(row_reduced)
+                                    print("New content from sheet1 is not yet uploaded to sheet2... uploading...")
+                                    print(row)
                             except Exception as e:
                                 print("There was problem with new content data, some data required is missing...")
         # check if year is ending, if so download new year reservations from January
