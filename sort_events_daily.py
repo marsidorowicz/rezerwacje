@@ -132,11 +132,13 @@ def sort_events():
                 d += 1
             # check next month to see if there are new events including new year first month #todo
             d = 1
-            while d <= calendar.monthrange(date.year, date.month + 1)[1]:
+            while d <= calendar.monthrange(date.year+1, 1)[1]:
+                print('To grudzień więc następny miesiąc jest w nowym roku')
                 for row in rows_zapas:
                     if str(d) in row:
-                        if months[today.month] in row:
-                            if str(today.year) in row:  # make list of all events for next month in this year
+
+                        if 'STYCZEŃ' in row:
+                            if str(today.year+1) in row:  # make list of all events for next month in this year
 
                                 print("W następnym miesiącu: ", row)
                                 if str(d) == str(row[4]):

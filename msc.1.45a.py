@@ -6,7 +6,6 @@ from tkinter import *
 import platform
 import datetime
 import calendar
-import schedule
 import time
 import sched
 import time
